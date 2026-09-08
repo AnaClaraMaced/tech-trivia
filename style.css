@@ -1,0 +1,25 @@
+
+:root {
+    --cor-ambar: #a56205ef;
+    --cor-violeta: #0e022e;
+    --cor-mediado: #3b1368;
+    --cor-fundo: #140F1F;
+    --cor-texto: #F5F0E6;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: 
+     linear-gradient(rgba(245, 240, 230, 0.06) 1px, transparent 1px),
+     linear-gradient(90deg, rgba(245, 240, 230, 0.06) 1px, transparent 1px),
+     linear-gradient(140deg, var(--cor-violeta), var(--cor-mediado), var(--cor-ambar));
+  background-size: 40px 40px, 40px 40px, cover;
+  color: var(--cor-texto);
+
+}
+
+
+h1 {
+    color: var(--cor-texto);
+}
