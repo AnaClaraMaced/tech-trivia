@@ -4,7 +4,7 @@
     --cor-violeta: #0e022e;
     --cor-mediado: #3b1368;
     --cor-fundo: #140F1F;
-    --cor-texto: #F5F0E6;
+    --cor-texto: #f5f2ee;
 }
 
 body {
@@ -22,4 +22,36 @@ body {
 
 h1 {
     color: var(--cor-texto);
+}
+form {
+    background-color: #F5F0E6;
+    padding: 25px;
+    border-radius: 15px;
+}
+input{
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+input:focus{
+    outline: none;
+    border-color: #3b1368;
+    box-shadow: 0 0 5px rgba(69, 19, 104, 0.4);
+}
+button{
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #e5a332, #54248b);
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+button:hover{
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+label{
+    color: #3b1368;
+
 }
