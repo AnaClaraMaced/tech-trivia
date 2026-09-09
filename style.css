@@ -1,8 +1,8 @@
 
 :root {
-    --cor-ambar: #a56205ef;
+    --cor-ambar: #b36b06ef;
     --cor-violeta: #0e022e;
-    --cor-mediado: #3b1368;
+    --cor-mediado: #3b1566;
     --cor-fundo: #140F1F;
     --cor-texto: #f5f2ee;
 }
@@ -10,6 +10,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  font-family: 'Inter', sans-serif;
   background: 
      linear-gradient(rgba(245, 240, 230, 0.06) 1px, transparent 1px),
      linear-gradient(90deg, rgba(245, 240, 230, 0.06) 1px, transparent 1px),
@@ -21,15 +22,19 @@ body {
 
 
 h1 {
+    font-family: 'Space Grotesk', sans-serif;
     color: var(--cor-texto);
 }
 form {
     background-color: #F5F0E6;
     padding: 25px;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 input{
-    padding: 10px;
+    padding: 9px;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
@@ -55,3 +60,49 @@ label{
     color: #3b1368;
 
 }
+
+.start-row {
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.start-row form {
+    flex: 2;
+}
+
+.lista-info {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.lista-info li {
+    background-color: rgba(245, 240, 230, 0.06);
+    border: 1px solid rgba(245, 240, 230, 0.16);
+    border-left: 3px solid var(--cor-ambar);
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--cor-texto);
+}
+
+.lista-info li::before {
+    content: "// ";
+    color: var(--cor-ambar);
+}
+
+.app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
