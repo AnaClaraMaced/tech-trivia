@@ -20,7 +20,6 @@ body {
 
 }
 
-
 h1 {
     font-family: 'Space Grotesk', sans-serif;
     color: var(--cor-texto);
@@ -99,7 +98,6 @@ label{
     content: "// ";
     color: var(--cor-ambar);
 }
-
 .app {
     max-width: 900px;
     margin: 0 auto;
