@@ -18,6 +18,9 @@ body {
   background-size: 40px 40px, 40px 40px, cover;
   color: var(--cor-texto);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
@@ -32,9 +35,47 @@ form {
     flex-direction: column;
     gap: 12px;
 }
+.avatar-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.avatar-title {
+    font-size: 13px;
+    color: #3b1368;
+    font-weight: 600;
+}
+
+.avatar-opcoes {
+    display: flex;
+    gap: 8px;
+}
+
+.avatar-item {
+    font-size: 20px;
+    padding: 6px 10px;
+    background: #e9e2d5;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.avatar-item.selecionado, 
+.avatar-item:hover {
+    border-color: #e5a332;
+    background: #ffffff;
+}
+/* ⬆️ FIM DO CÓDIGO DO AVATAR ⬆️ */
+
+label {
+    color: #3b1368;
+}
 input{
     padding: 9px;
-    border-radius: 8px;
+    border-radius: 8px; 
     border: 1px solid #ccc;
 }
 input:focus{
@@ -104,3 +145,32 @@ label{
     padding: 40px 24px;
 }
 
+#start-screen{
+    background: rgba(20, 15, 31, 0.20); 
+    border: 1px solid rgba(245, 240, 230, 0.12); 
+    border-radius: 20px;                 
+    padding: 40px;                       
+    backdrop-filter: blur(16px);       
+    -webkit-backdrop-filter: blur(16px);  
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+    width: 100%;
+    max-width: 750px;
+}
+header{
+    text-align: center;
+    margin-bottom: 24px;
+}
+h1{
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 12px 0 6px 0;
+    font-size: 44px;
+}
+h2{
+    font-size: 25px;
+    text-align: center;
+}
