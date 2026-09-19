@@ -279,3 +279,144 @@ c
 .destaque {
     color: var(--cor-texto);
 }
+/* caixa principal da tela das perguntas */
+#quiz-screen {
+    background: rgba(20, 15, 31, 0.20);
+    border: 1px solid rgba(245, 240, 230, 0.12);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 750px;
+}
+
+/* número da pergunta */
+.contador-pergunta {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cor-ambar);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* caixa onde aparece a pergunta */
+.pergunta-box {
+    background: rgba(245, 240, 230, 0.06);
+    border: 1px solid rgba(245, 240, 230, 0.12);
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+/* texto da pergunta */
+.pergunta-box h2 {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.4;
+}
+
+/* grupo das respostas */
+.alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* cada resposta */
+.alternativa {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(245, 240, 230, 0.08);
+    border: 1px solid rgba(245, 240, 230, 0.18);
+    color: var(--cor-texto);
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+}
+
+/* efeito ao passar o mouse */
+.alternativa:hover {
+    transform: translateX(5px);
+    border-color: var(--cor-ambar);
+}
+
+/* botão próxima */
+.btn-proxima {
+    display: block;
+    margin: 25px 0 0 auto;
+    padding: 12px 22px;
+}
+.quiz-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quiz-topo .contador-pergunta {
+    margin: 0;
+}
+
+.cronometro {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(245, 240, 230, 0.08);
+    border: 1px solid rgba(245, 240, 230, 0.16);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--cor-texto);
+}
+.quiz-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.quiz-topo p {
+    margin: 0;
+}
+
+.contador-pergunta {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--cor-ambar);
+    font-size: 14px;
+}
+
+.pontuacao {
+    margin-top: 6px !important;
+    font-size: 13px;
+    color: var(--cor-texto);
+}
+
+.cronometro {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(245, 240, 230, 0.08);
+    border: 1px solid rgba(245, 240, 230, 0.16);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+}
+.progresso-container {
+    width: 100%;
+    height: 7px;
+    background: rgba(245, 240, 230, 0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progresso {
+    width: 10%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--cor-ambar),
+        #54248b
+    );
+    border-radius: 10px;
+}
