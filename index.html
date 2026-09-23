@@ -12,12 +12,8 @@
         <section id="start-screen">
         <header>
             <span class="badge"> 💻 Tech Trivia</span>
-            
-            <h1 class="logo">
-              Verdade ou Bug
-              
-            </h1>
-            <p class="subtitulo">Curiosidades sobre tecnologia</p>
+            <h1 class="logo">Verdade ou Bug</h1>
+<p class="tagline">// Curiosidades Sobre Tecnologia</p>
             
             
         </header>
@@ -50,11 +46,9 @@
                         </div>
                 <label>Como podemos te chamar?</label>
                 <input type="text">
-                <button type="submit">Começar Quiz</button>
+                <button type="submit">Continuar...</button>
             </form>
-
-        
-             </ul>
+            
              </div>
             </main>
         </section>
@@ -84,9 +78,14 @@
             <li>explicação a cada resposta</li>
             <li>sem tempo limite</li>
         </ul>
-    </section>
 
-    <!-- TELA DAS PERGUNTAS -->
+       
+        <button type="submit">--- Começar Quiz ---</button>
+    </section>
+    
+    <!-- ===================================================== -->
+    <!--                   TELA DAS PERGUNTAS                  -->
+    <!-- ===================================================== -->
 <section id="quiz-screen">
 
     <header>
@@ -111,7 +110,7 @@
     </p>
 
     <p class="cronometro">
-        ⏱ <span id="tempo">03:00</span>
+        ⏱ <span id="tempo">00:00</span>
     </p>
 
 </div>
@@ -149,7 +148,139 @@
 
 </section>
 
-    <footer>
+<!-- ===================================================== -->
+<!--                   TELA DE RESULTADO                    -->
+<!-- ===================================================== -->
+<section id="resultado-screen">
+
+    <header>
+        <span class="badge">💻 Tech Trivia</span>
+        <h1 class="logo">Verdade ou Bug</h1>
+        <p class="tagline">// sua performance</p>
+    </header>
+
+    <!-- anel de progresso com a pontuação final -->
+    <div class="anel-wrap">
+        <div class="anel-resultado">
+            <svg viewBox="0 0 172 172" width="172" height="172">
+                <defs>
+                    <linearGradient id="anelGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#e5a332"/>
+                        <stop offset="100%" stop-color="#54248b"/>
+                    </linearGradient>
+                </defs>
+                <circle class="anel-trilha" cx="86" cy="86" r="72"/>
+                <circle class="anel-progresso" cx="86" cy="86" r="72"/>
+            </svg>
+            <div class="anel-centro">
+                <span class="anel-pontos">8<small>/10</small></span>
+                <span class="anel-percentual">80% de acerto</span>
+            </div>
+        </div>
+    </div>
+
+    <p class="nivel-badge">Boa, Usuário! <span class="tag-nivel">nível: debugger sênior</span></p>
+
+    <div class="terminal-box">
+        <p><span class="ok">[ok]</span> respostas corretas: <span class="destaque">8/10</span></p>
+        <p><span class="ok">[ok]</span> tempo total: <span class="destaque">02:14</span></p>
+        <p><span class="alerta">[!]</span> maior sequência de acertos: <span class="destaque">5</span></p>
+        <p><span class="erro">[x]</span> erros nas perguntas: <span class="destaque">03, 07</span></p>
+    </div>
+
+
+    <p class="qlist-titulo">Sua sequência de respostas</p>
+    <div class="qlist">
+        <span class="qitem acerto">01</span>
+        <span class="qitem acerto">02</span>
+        <span class="qitem erro">03</span>
+        <span class="qitem acerto">04</span>
+        <span class="qitem acerto">05</span>
+        <span class="qitem acerto">06</span>
+        <span class="qitem erro">07</span>
+        <span class="qitem acerto">08</span>
+        <span class="qitem acerto">09</span>
+        <span class="qitem acerto">10</span>
+    </div>
+
+    <div class="botoes-resultado">
+        <button type="button" class="btn-primario">Ver ranking da sessão →</button>
+        <button type="button" class="btn-secundario">Jogar novamente</button>
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!--                    TELA DE RANKING                     -->
+<!-- ===================================================== -->
+<section id="ranking-screen">
+
+    <header>
+        <span class="badge">💻 Tech Trivia</span>
+        <h1 class="logo">Verdade ou Bug</h1>
+        <p class="tagline">// Ranking da sessão</p>
+    </header>
+
+    <!-- pódio com os 3 primeiros colocados -->
+    <div class="podio">
+       <div class="podio-card segundo">
+           <p class="podio-label">2º lugar</p>
+           <div class="podio-avatar">🦋</div>
+           <p class="podio-nome">Marina</p>
+           <p class="podio-pontos">920 pts</p>
+        </div>
+
+        <div class="podio-card primeiro">
+           <p class="podio-label">👑 1º lugar</p>
+           <div class="avatar-anel-ouro">
+           <div class="podio-avatar">🤖</div>
+        </div>
+           <p class="podio-nome">Kaique</p>
+           <p class="podio-pontos">1040 pts</p>
+        </div>
+        <div class="podio-card terceiro">
+           <p class="podio-label">3º lugar</p>
+           <div class="podio-avatar">🐙</div>
+           <p class="podio-nome">Bia</p>
+           <p class="podio-pontos">870 pts</p>
+        </div>
+
+    </div>
+
+    <!-- lista dos demais colocados -->
+    <div class="rank-lista">
+        <div class="rank-linha voce">
+            <span class="rank-posicao">4º</span>
+            <span class="rank-avatar">👾</span>
+            <span class="rank-nome">Usuário <span class="tag-voce">você</span></span>
+            <span class="rank-pontos">800 pts</span>
+        </div>
+        <div class="rank-linha">
+            <span class="rank-posicao">5º</span>
+            <span class="rank-avatar">🐶</span>
+            <span class="rank-nome">Diego</span>
+            <span class="rank-pontos">760 pts</span>
+        </div>
+        <div class="rank-linha">
+            <span class="rank-posicao">6º</span>
+            <span class="rank-avatar">🎮</span>
+            <span class="rank-nome">Lucas</span>
+            <span class="rank-pontos">705 pts</span>
+        </div>
+        <div class="rank-linha">
+            <span class="rank-posicao">7º</span>
+            <span class="rank-avatar">🌸</span>
+            <span class="rank-nome">Aline</span>
+            <span class="rank-pontos">640 pts</span>
+        </div>
+    </div>
+
+    <div class="botoes-resultado">
+        <button type="button" class="btn-primario">Jogar novamente</button>
+        <button type="button" class="btn-secundario">Compartilhar resultado</button>
+    </div>
+
+</section>
 
         <footer>
             <p> Verdade ou Bug — Projeto Acadêmico · Interdisciplinar </p>
@@ -159,3 +290,4 @@
 </body>
 </html>
 
+>

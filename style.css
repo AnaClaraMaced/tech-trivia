@@ -1,10 +1,9 @@
 
 /* variaveis de cor do site por inteiro */
 :root {
-    --cor-ambar: #b36b06ef;
-    --cor-violeta: #0e022e;
+    --cor-ambar: #e5a332;
+    --cor-violeta: #692b92;
     --cor-mediado: #3b1566;
-    --cor-fundo: #140F1F;
     --cor-texto: #f5f2ee;
 }
 
@@ -26,7 +25,7 @@ body {
   align-items: center;
 }
 
-/* ==== card claro do formulario =====
+/* ==== card claro do formulario ==========
    (a caixa bege onde ficam o avatar, o campo de nome e o botão de começar)*/
 form {
     background-color: #F5F0E6;
@@ -72,7 +71,7 @@ form {
    ou quando o mouse passa por cima */
 .avatar-item.selecionado, 
 .avatar-item:hover {
-    border-color: #e5a332;
+    border-color: var(--cor-ambar);
     background: #ffffff;
 }
 /* O texto "Como podemos te chamar?" */
@@ -87,27 +86,14 @@ input{
     border-radius: 8px; 
     border: 1px solid #ccc;
 }
+
 /* campo do nome quando esta selecionado */
 input:focus{
     outline: none;
     border-color: #3b1368;
     box-shadow: 0 0 5px rgba(69, 19, 104, 0.4);
 }
-/* design do botão "começar quiz" */
-button{
-    padding: 10px;
-    border: none;
-    border-radius: 20px;
-    background: linear-gradient(90deg, #e5a332, #54248b);
-    color: white;
-    font-weight: bold;
-    transition: 0.3s;
-}
-/* reação do botão quando o mouse passa por cima do botão "começar quiz" */
-button:hover{
-    transform: scale(1.02);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
+
 
 /* controla o espaçamento acima do formulario */
 .start-row {
@@ -168,8 +154,11 @@ button:hover{
 
  /* quadrado de fundo semi-trasnparente com efeito borrado
     usados nas telas onde fica o conteudo */
+#start-screen,
 #ready-screen,
-#start-screen{
+#quiz-screen,
+#resultado-screen,
+#ranking-screen {
     background: rgba(20, 15, 31, 0.20); 
     border: 1px solid rgba(245, 240, 230, 0.12); 
     border-radius: 20px;                 
@@ -179,6 +168,7 @@ button:hover{
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
     width: 100%;
     max-width: 750px;
+    margin: 0 auto 24px auto;  
 
 }
 
@@ -270,7 +260,6 @@ footer p {
     color: #5be8a0;
 }
 
-c
 /* cor da palavra [!] */
 .alerta {
     color: var(--cor-ambar);
@@ -278,27 +267,6 @@ c
 /* as palavras em destaque depois dos dois pontos no terminal */
 .destaque {
     color: var(--cor-texto);
-}
-/* caixa principal da tela das perguntas */
-#quiz-screen {
-    background: rgba(20, 15, 31, 0.20);
-    border: 1px solid rgba(245, 240, 230, 0.12);
-    border-radius: 20px;
-    padding: 40px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    width: 100%;
-    max-width: 750px;
-}
-
-/* número da pergunta */
-.contador-pergunta {
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--cor-ambar);
-    font-size: 14px;
-    margin-bottom: 20px;
 }
 
 /* caixa onde aparece a pergunta */
@@ -349,27 +317,9 @@ c
     margin: 25px 0 0 auto;
     padding: 12px 22px;
 }
-.quiz-topo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
 
-.quiz-topo .contador-pergunta {
-    margin: 0;
-}
-
-.cronometro {
-    margin: 0;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: rgba(245, 240, 230, 0.08);
-    border: 1px solid rgba(245, 240, 230, 0.16);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--cor-texto);
-}
+/* fileira do topo da tela de perguntas: número da pergunta,
+   pontuação e cronômetro lado a lado */
 .quiz-topo {
     display: flex;
     justify-content: space-between;
@@ -381,18 +331,22 @@ c
     margin: 0;
 }
 
+/* número da pergunta (ex: "Pergunta 1 de 10") */
 .contador-pergunta {
+    text-align: center;
     font-family: 'JetBrains Mono', monospace;
     color: var(--cor-ambar);
     font-size: 14px;
 }
 
+/* pontuação atual do jogador */
 .pontuacao {
-    margin-top: 6px !important;
+    margin-top: 6px;
     font-size: 13px;
     color: var(--cor-texto);
 }
 
+/* caixinha do cronômetro */
 .cronometro {
     padding: 8px 12px;
     border-radius: 8px;
@@ -400,7 +354,9 @@ c
     border: 1px solid rgba(245, 240, 230, 0.16);
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
+    color: var(--cor-texto);
 }
+
 .progresso-container {
     width: 100%;
     height: 7px;
@@ -419,4 +375,414 @@ c
         #54248b
     );
     border-radius: 10px;
+}
+
+.tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    letter-spacing: 0.05em;
+    color: var(--cor-ambar);
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+#ready-screen .lista-info {
+    justify-content: space-between;
+}
+
+#ready-screen .lista-info li {
+    flex: 1;
+    text-align: center;
+}
+
+button{
+    padding: 10px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(90deg, var(--cor-ambar), #54248b);
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover{
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(229, 163, 50, 0.4);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* =============================================================
+   TELA DE RESULTADO — anel de pontuação
+   =============================================================*/
+
+/* centraliza o anel de pontuação no meio da tela */
+.anel-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+/* caixa que dá o tamanho fixo pro anel (o svg + o número no centro
+   ficam um em cima do outro dentro dela) */
+.anel-resultado {
+    position: relative;
+    width: 172px;
+    height: 172px;
+}
+
+/* gira o desenho do círculo 90 graus pra ele começar a preencher
+   lá de cima (12h) em vez de começar do lado direito (3h) */
+.anel-resultado svg {
+    transform: rotate(-90deg);
+}
+
+/* o "trilho" cinza do anel, ou seja, o círculo completo que fica
+   por baixo, mostrando o total (os 10/10 possíveis) */
+.anel-trilha {
+    fill: none;
+    stroke: rgba(245, 240, 230, 0.12);
+    stroke-width: 12;
+}
+
+/* a parte colorida do anel, que mostra quanto foi preenchido
+   (os acertos). usa o degradê "anelGradient" definido no SVG do HTML */
+.anel-progresso {
+    fill: none;
+    stroke: url(#anelGradient);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 452;      /* comprimento total do círculo (perímetro) */
+    stroke-dashoffset: 90.4;    /* quanto fica "escondido" — controla o %
+                                    preenchido. fórmula: 452 - (452 * %/100) */
+}
+
+/* posiciona o número da pontuação exatamente no centro do anel,
+   por cima do círculo */
+.anel-centro {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* o número grande "8" dentro do anel */
+.anel-pontos {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    color: var(--cor-texto);
+    line-height: 1;
+}
+
+/* o "/10" pequeno, escrito do lado do número grande */
+.anel-pontos small {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(245, 240, 230, 0.6);
+}
+
+/* o texto "80% de acerto" embaixo do número, dentro do anel */
+.anel-percentual {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cor-ambar);
+    margin-top: 6px;
+}
+
+/* linha "Boa, Usuário!" junto com o selo do nível — fica centralizada
+   embaixo do anel de pontuação */
+.nivel-badge {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cor-texto);
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+/* o "selinho" laranja com o nível alcançado (ex: "nível: debugger sênior") */
+.tag-nivel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3bd6c2;
+    padding: 2px 8px;
+    border-radius: 100px;
+    margin-left: 3px;
+}
+
+/* cor vermelha da palavra [x] no terminal — usada pra marcar erro,
+   assim como .ok é verde e .alerta é laranja */
+.erro {
+    color: #e2665f;
+}
+
+/* texto pequeno "Sua sequência de respostas" que fica acima do grid
+   de quadradinhos */
+.qlist-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(245, 240, 230, 0.6);
+    margin: 0 0 10px 0;
+}
+
+/* organiza os 10 quadradinhos (um por pergunta) em grade de 5 colunas,
+   formando duas fileiras de 5 */
+    .qlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 20px auto;
+}
+
+/* cada quadradinho individual do grid — o aspect-ratio garante que
+   ele sempre fique quadrado, não importa a largura da tela */
+.qitem {
+    width: 50px;
+    height: 45px;
+    box-sizing: border-box;
+    clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 530;
+    border: 1px solid;
+}
+
+/* cor verde do quadradinho quando a pergunta foi acertada */
+.qitem.acerto {
+    background: rgba(91, 232, 160, 0.12);
+    border-color: rgba(91, 232, 160, 0.4);
+    color: #5be8a0;
+}
+
+/* cor vermelha do quadradinho quando a pergunta foi errada */
+.qitem.erro {
+    background: rgba(226, 102, 95, 0.12);
+    border-color: rgba(226, 102, 95, 0.4);
+    color: #e2665f;
+}
+
+/* empilha os dois botões finais (primário e secundário) um embaixo
+   do outro, com espaço entre eles */
+.btn-primario,
+.btn-secundario {
+    padding: 11px 20px;
+    font-size: 14.5px;
+}
+/* empilha os dois botões finais (primário e secundário) um embaixo
+   do outro, com espaço entre eles */
+.botoes-resultado {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* o botão principal de cada tela final (ex: "Ver ranking", "Jogar
+   novamente") — usa o mesmo degradê do botão "Começar Quiz" */
+.btn-primario {
+    background: linear-gradient(90deg, var(--cor-ambar), #54248b);
+    color: #fff;
+}
+
+/* o botão secundário, mais discreto — só contorno, sem preenchimento,
+   pra não competir visualmente com o botão primário */
+.btn-secundario {
+    background: transparent;
+    border: 1px solid rgba(245, 240, 230, 0.18);
+    color: var(--cor-texto);
+}
+
+/* =============================================================
+   TELA DE RANKING — pódio + lista de colocados
+   =============================================================*/
+
+/* organiza os 3 blocos do pódio lado a lado, alinhados pela base
+   (é por isso que os "degraus" parecem nascer do chão) */
+.podio {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    margin: 8px 0 24px 0;
+}
+
+/* O anel giratório dourado — só existe ao redor do avatar
+   que estiver dentro dele (ou seja, só o 1º lugar) */
+.avatar-anel-ouro {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    background: conic-gradient(from 180deg, #ffd166, var(--cor-mediado), var(--cor-violeta), #ffd166);
+    padding: 4px;
+    margin: 0 auto 8px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajusta o avatar de dentro pra preencher o anel certinho,
+   sem repetir a margem (o anel de fora já cuida disso) */
+.avatar-anel-ouro .podio-avatar {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: none;
+}
+
+
+/* o círculo bege com o emoji do jogador, em cima de cada coluna
+   do pódio */
+.podio-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    background: #F5F0E6;
+    border: 4px solid var(--cor-ambar);
+    margin-bottom: 8px;
+}
+
+
+/* nome do jogador embaixo do avatar, no pódio */
+.podio-nome {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--cor-texto);
+}
+
+/* pontuação do jogador, entre o nome e a barra colorida */
+.podio-pontos {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: rgba(245, 240, 230, 0.6);
+    margin-bottom: 4px;
+}
+
+/* empilha as linhas da lista de ranking (4º colocado em diante),
+   uma embaixo da outra */
+.rank-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+/* cada coluna do pódio (rótulo + avatar + nome + pontos),
+   empilhados verticalmente e com largura fixa pra alinhar os 3 */
+.podio-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95px;
+}
+
+/* texto "1º lugar", "2º lugar", "👑 1º lugar" acima do avatar */
+.podio-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cor-texto);
+    margin: 0 0 8px 0;
+}
+
+/* deixa o card do 1º lugar um pouco mais alto que os outros dois,
+   já que ele não tem mais a "barra" de degrau colorida */
+.podio-card.primeiro {
+    margin-bottom: 16px;
+}
+
+
+/* cada linha individual da lista: posição + avatar + nome + pontos,
+   um do lado do outro */
+.rank-linha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+    background: rgba(245, 240, 230, 0.03);
+}
+
+/* estilo especial da linha que representa o jogador atual —
+   fica com borda e fundo laranja pra se destacar das demais */
+.rank-linha.voce {
+    border-color: var(--cor-ambar);
+    background: rgba(179, 107, 6, 0.12);
+}
+
+/* numerozinho da posição (4º, 5º, 6º...) no começo de cada linha */
+.rank-posicao {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: rgba(245, 240, 230, 0.6);
+    width: 22px;
+}
+
+/* deixa a posição do jogador atual na cor laranja e mais grossa */
+.rank-linha.voce .rank-posicao {
+    color: var(--cor-ambar);
+    font-weight: 600;
+}
+
+/* miniatura circular do avatar de cada jogador na lista */
+.rank-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #F5F0E6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+/* nome do jogador na lista — o flex: 1 empurra os pontos pra
+   ponta direita da linha */
+.rank-nome {
+    flex: 1;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--cor-texto);
+}
+
+/* deixa o nome do jogador atual em negrito, pra reforçar o destaque */
+.rank-linha.voce .rank-nome {
+    font-weight: 700;
+}
+
+/* a etiqueta pequena "você" que aparece do lado do próprio nome
+   do jogador na lista */
+.tag-voce {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cor-ambar);
+    margin-left: 6px;
+}
+
+/* pontuação de cada jogador, alinhada na ponta direita da linha */
+.rank-pontos {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: rgba(245, 240, 230, 0.6);
+}
+
+/* deixa a pontuação do jogador atual mais clara/legível que a
+   dos outros, que ficam num tom mais apagado */
+.rank-linha.voce .rank-pontos {
+    color: var(--cor-texto);
 }
