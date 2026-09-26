@@ -10,3 +10,5 @@ mudanca 2.0
 
 
 -- readme tech trivia --
+
+** MARCELO LUDIN ON**
