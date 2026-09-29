@@ -786,3 +786,18 @@ button:active {
 .rank-linha.voce .rank-pontos {
     color: var(--cor-texto);
 }
+#quiz-screen .quiz-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 22px;
+    gap: 15px;
+}
+
+#quiz-screen .btn-desistir {
+    margin: 0;
+}
+
+#quiz-screen .btn-proxima {
+    margin: 0;
+}
