@@ -831,3 +831,31 @@ button:active {
 #quiz-screen .btn-proxima {
     margin: 0;
 }
+/* caixa da explicação que aparece depois de responder */
+.explicacao {
+    margin: 16px 0 0 0;
+    padding: 14px 16px;
+    border-left: 3px solid var(--cor-ambar);
+    border-radius: 8px;
+    background: rgba(245, 240, 230, 0.06);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* alternativa que o jogador acertou */
+.alternativa.certa {
+    border-color: #5be8a0;
+    background: rgba(91, 232, 160, 0.12);
+}
+
+/* alternativa que o jogador errou */
+.alternativa.errada {
+    border-color: #e2665f;
+    background: rgba(226, 102, 95, 0.12);
+}
+
+/* alternativa travada depois de responder */
+.alternativa:disabled {
+    cursor: default;
+    transform: none;
+}
