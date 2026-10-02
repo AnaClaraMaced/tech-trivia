@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tech-trivia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap&family=JetBrains+Mono:wght@400;600" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app">
         <section id="start-screen">
         <header>
-            <span class="badge"> 💻 Tech Trivia</span>
+           
             <h1 class="logo">Verdade ou Bug</h1>
 <p class="tagline">// Curiosidades Sobre Tecnologia</p>
             
@@ -19,9 +19,10 @@
         </header>
 
         <ul class="lista-info">
-                 <li>❓ 10 perguntas</li>
-                 <li>⏱️~3 minutos</li>
-                 <li>🏆 Ranking da sessão</li>
+                 <li>❓ 10 Perguntas</li>
+                 <li>🏆 Ranking da Sessão</li>
+                 <li>100 pts por acerto</li>
+                 
                  </ul>
 
         <main>
@@ -30,7 +31,7 @@
         <div class="start-row">
             <form>
                 <div class="avatar-box">
-                            <span class="avatar-title">Escolha seu avatar:</span>
+                            <span class="avatar-title">Escolha seu Avatar:</span>
                             <div class="avatar-opcoes">
                                 <span class="avatar-item selecionado" role="img" aria-label="Avatar monstrinho pixel" data-avatar="👾">👾</span>
                                     <span class="avatar-item" role="img" aria-label="Avatar foguete" data-avatar="🚀">🚀</span>
@@ -43,9 +44,9 @@
                                     <span class="avatar-item" role="img" aria-label="Avatar controle de videogame" data-avatar="🎮">🎮</span>
                             </div>
                         </div>
-                <label>Como podemos te chamar?</label>
-                <input type="text">
-                <button type="submit">Continuar...</button>
+                <label for="nome-jogador">Como podemos te chamar?</label>
+                <input type="text" id="nome-jogador" required>
+               <button type="submit">Continuar →</button>
             </form>
             
              </div>
@@ -54,7 +55,7 @@
 
     <section id="ready-screen">
         <header>
-            <span class="badge"> 💻 Tech Trivia</span>
+           
             <h1 class="logo">
               Verdade ou Bug
             </h1>
@@ -64,7 +65,7 @@
         <div class="avatar-grande">👾</div>
          
         <h2 class="saudacao">Olá, Usuário! 👋</h2>
-        <p class="subtitulo">Preparada pra testar seus conhecimentos?</p>
+        <p class="subtitulo">Preparada pra testar seus Conhecimentos?</p>
 
         <div class="terminal-box">
             <p><span class="ok">[ok]</span> jogador: <span class="destaque">Usuário</span></p>
@@ -73,9 +74,9 @@
             <p><span class="alerta">[!]</span> modo: <span class="destaque">verdadeiro ou falso</span></p>
         </div>
         <ul class="lista-info">
-            <li>10 questões</li>
-            <li>explicação a cada resposta</li>
-            <li>sem tempo limite</li>
+            <li>10 Questões</li>
+            <li>Explicação a cada Resposta</li>
+            <li>sem Tempo Limite</li>
         </ul>
         <button type="submit">--- Começar Quiz ---</button>
         <button type ="button" class="btn-secundario">Voltar</button>
@@ -89,7 +90,7 @@
 
     <header>
 
-        <span class="badge">💻 Tech Trivia</span>
+       
 
         <h1 class="logo">
             Verdade ou Bug
@@ -163,9 +164,9 @@
 <section id="resultado-screen">
 
     <header>
-        <span class="badge">💻 Tech Trivia</span>
+        
         <h1 class="logo">Verdade ou Bug</h1>
-        <p class="tagline">// sua performance</p>
+        <p class="tagline">// Sua Performance</p>
     </header>
 
     <!-- anel de progresso com a pontuação final -->
@@ -191,14 +192,14 @@
     <p class="nivel-badge">Boa, Usuário! <span class="tag-nivel">nível: debugger sênior</span></p>
 
     <div class="terminal-box">
-        <p><span class="ok">[ok]</span> respostas corretas: <span class="destaque">8/10</span></p>
-        <p><span class="ok">[ok]</span> tempo total: <span class="destaque">02:14</span></p>
-        <p><span class="alerta">[!]</span> maior sequência de acertos: <span class="destaque">5</span></p>
-        <p><span class="erro">[x]</span> erros nas perguntas: <span class="destaque">03, 07</span></p>
+        <p><span class="ok">[ok]</span> Respostas Corretas: <span class="destaque">8/10</span></p>
+        <p><span class="ok">[ok]</span> Tempo Total: <span class="destaque">02:14</span></p>
+        <p><span class="alerta">[!]</span> Maior Sequência de Acertos: <span class="destaque">5</span></p>
+        <p><span class="erro">[x]</span> Erros nas Perguntas: <span class="destaque">03, 07</span></p>
     </div>
 
 
-    <p class="qlist-titulo">Sua sequência de respostas</p>
+    <p class="qlist-titulo">Sua Sequência de Respostas</p>
     <div class="qlist">
         <span class="qitem acerto">01</span>
         <span class="qitem acerto">02</span>
@@ -213,7 +214,7 @@
     </div>
 
     <div class="botoes-resultado">
-        <button type="button" class="btn-primario">Ver ranking da sessão →</button>
+        <button type="button" class="btn-primario">Ver ranking da Sessão →</button>
         <button type="button" class="btn-secundario">Jogar novamente</button>
     </div>
 
@@ -225,9 +226,9 @@
 <section id="ranking-screen">
 
     <header>
-        <span class="badge">💻 Tech Trivia</span>
+    
         <h1 class="logo">Verdade ou Bug</h1>
-        <p class="tagline">// Ranking da sessão</p>
+        <p class="tagline">// Ranking da Sessão</p>
     </header>
 
     <!-- pódio com os 3 primeiros colocados -->
@@ -285,8 +286,8 @@
     </div>
 
     <div class="botoes-resultado">
-        <button type="button" class="btn-primario">Jogar novamente</button>
-        <button type="button" class="btn-secundario">Compartilhar resultado</button>
+        <button type="button" class="btn-primario">Jogar Novamente</button>
+        <button type="button" class="btn-secundario">Compartilhar Resultado</button>
     </div>
 
 </section>
@@ -298,7 +299,7 @@
     </div>
      <!-- Alteração feita por: Marcelo Ludin -->
     <!-- inserindo js arquivo -->
-    <script src="interatividade.js"></script>
+     <script src="interatividade.js"></script>
 </body>
 </html>
 
