@@ -12,3 +12,5 @@ mudanca 2.0
 -- readme tech trivia --
 
 ** MARCELO LUDIN ON**
+
+Verificando atualização 2.0 java
