@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
      Ao clicar, vai para a tela de perguntas e liga o cronômetro
      que já existe no HTML (span#tempo).
      ------------------------------------------------------------- */
-  const botaoComecarQuiz = document.querySelector("#ready-screen button");
+  const botaoComecarQuiz = document.querySelector("#ready-screen button:not(.btn-secundario)"); // Correção — Marcelo Ludin: antes pegava "o 1º botão" qualquer
   const spanTempo = document.getElementById("tempo");
   let cronometro = null;
   let segundosPassados = 0;
@@ -303,17 +303,27 @@ document.addEventListener("DOMContentLoaded", function () {
     else if (pct >= 50) { frase = "Quase lá"; nivel = "dev júnior"; }
     const elBadge = document.querySelector("#resultado-screen .nivel-badge");
     if (elBadge) {
-      elBadge.innerHTML = frase + ", " + nome + "! <span class=\"tag-nivel\">nível: " + nivel + "</span>";
+      // Correção — Marcelo Ludin: textContent no lugar de innerHTML (o nome vem do usuário)
+      elBadge.textContent = frase + ", " + nome + "! ";
+      const tagNivel = document.createElement("span");
+      tagNivel.className = "tag-nivel";
+      tagNivel.textContent = "nível: " + nivel;
+      elBadge.appendChild(tagNivel);
     }
 
     // caixa de terminal (4 valores, na ordem em que estão no HTML)
-    const destaques = document.querySelectorAll("#resultado-screen .terminal-box .destaque");
-    if (destaques.length >= 4) {
-      destaques[0].textContent = acertos + "/" + total;
-      destaques[1].textContent = spanTempo ? spanTempo.textContent : "00:00";
-      destaques[2].textContent = maiorSequencia;
-      destaques[3].textContent = erradas.length ? erradas.join(", ") : "nenhum";
-    }
+    // Correção — Marcelo Ludin: o HTML passou a ter só 3 linhas (sem "Erros"), então
+    // o código antigo (que exigia 4) não atualizava nada. Agora cada linha é achada
+    // pelo texto do rótulo e, se alguma não existir, é simplesmente ignorada.
+    document.querySelectorAll("#resultado-screen .terminal-box p").forEach(function (linha) {
+      const valor = linha.querySelector(".destaque");
+      if (!valor) return;
+      const rotulo = linha.textContent;
+      if (rotulo.indexOf("Corretas") !== -1) valor.textContent = acertos + "/" + total;
+      else if (rotulo.indexOf("Tempo") !== -1) valor.textContent = spanTempo ? spanTempo.textContent : "00:00";
+      else if (rotulo.indexOf("Sequência") !== -1) valor.textContent = maiorSequencia;
+      else if (rotulo.indexOf("Erros") !== -1) valor.textContent = erradas.length ? erradas.join(", ") : "nenhum";
+    });
 
     // quadradinhos da "Sua Sequência de Respostas"
     const itens = document.querySelectorAll("#resultado-screen .qitem");
@@ -321,6 +331,132 @@ document.addEventListener("DOMContentLoaded", function () {
       item.classList.remove("acerto", "erro");
       item.classList.add(resultados[i] ? "acerto" : "erro");
     });
+
+    // Alteração — Marcelo Ludin: atualiza o ranking com a pontuação real
+    atualizarRanking(nome);
+  }
+
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 5 — Marcelo Ludin
+     Ranking dinâmico. Os outros jogadores são fixos (os mesmos do
+     HTML + mais 5 para fechar os "12 jogadores" do banner). O
+     jogador entra na lista com os pontos reais, a lista é ordenada
+     e atualizamos:
+       - o banner da tela de resultado (posição, total, pts pro pódio)
+       - o pódio e a lista da tela de ranking
+       - o texto do botão "Compartilhar Resultado"
+     ------------------------------------------------------------- */
+  const outrosJogadores = [
+    { nome: "Kaique", avatar: "🤖", pontos: 1040 },
+    { nome: "Marina", avatar: "🦋", pontos: 920 },
+    { nome: "Bia",    avatar: "🐙", pontos: 870 },
+    { nome: "Diego",  avatar: "🐶", pontos: 760 },
+    { nome: "Lucas",  avatar: "🎮", pontos: 705 },
+    { nome: "Aline",  avatar: "🌸", pontos: 640 },
+    { nome: "Rafa",   avatar: "💻", pontos: 590 },
+    { nome: "Julia",  avatar: "🚀", pontos: 520 },
+    { nome: "Pedro",  avatar: "🕹️", pontos: 430 },
+    { nome: "Tati",   avatar: "👾", pontos: 350 },
+    { nome: "Caio",   avatar: "🦋", pontos: 260 }
+  ];
+  let textoCompartilhar = "";
+
+  function atualizarRanking(nome) {
+    // monta a lista com o jogador no meio e ordena (em empate, o jogador fica abaixo)
+    const lista = outrosJogadores.map(function (j) { return j; });
+    lista.push({ nome: nome, avatar: avatarEscolhido, pontos: pontosTotal, voce: true });
+    lista.sort(function (a, b) { return b.pontos - a.pontos; });
+
+    const posicao = lista.findIndex(function (j) { return j.voce; }) + 1;
+    const total = lista.length;
+
+    // --- banner da tela de resultado ---
+    const elPosicao = document.getElementById("posicao");
+    const elTotal = document.getElementById("total");
+    const elFalta = document.querySelector("#resultado-screen .ranking-falta");
+    if (elPosicao) elPosicao.textContent = posicao + "º lugar";
+    if (elTotal) elTotal.textContent = total;
+    if (elFalta) {
+      if (posicao <= 3) {
+        elFalta.textContent = "você está no pódio! 🎉";
+      } else {
+        const faltam = Math.max(lista[2].pontos - pontosTotal, 1);
+        // recria a frase mantendo o span#pts-podio que já existe no HTML
+        elFalta.textContent = "faltam ";
+        const spanPts = document.createElement("span");
+        spanPts.id = "pts-podio";
+        spanPts.textContent = faltam;
+        elFalta.appendChild(spanPts);
+        elFalta.appendChild(document.createTextNode(" pts pro pódio"));
+      }
+    }
+
+    // --- pódio (1º, 2º e 3º) ---
+    const cartoes = [
+      { seletor: ".podio-card.primeiro", indice: 0 },
+      { seletor: ".podio-card.segundo",  indice: 1 },
+      { seletor: ".podio-card.terceiro", indice: 2 }
+    ];
+    cartoes.forEach(function (c) {
+      const card = document.querySelector("#ranking-screen " + c.seletor);
+      const j = lista[c.indice];
+      if (!card || !j) return;
+      const elAvatar = card.querySelector(".podio-avatar");
+      const elNome = card.querySelector(".podio-nome");
+      const elPts = card.querySelector(".podio-pontos");
+      if (elAvatar) elAvatar.textContent = j.avatar;
+      if (elNome) elNome.textContent = j.voce ? j.nome + " (você)" : j.nome;
+      if (elPts) elPts.textContent = j.pontos + " pts";
+    });
+
+    // --- lista dos demais (4º ao 7º). Se o jogador estiver abaixo do 7º,
+    //     ele ocupa a última linha para sempre aparecer na tela. ---
+    const elLista = document.querySelector("#ranking-screen .rank-lista");
+    if (elLista) {
+      let linhas = lista.slice(3, 7).map(function (j, i) {
+        return { j: j, pos: i + 4 };
+      });
+      if (posicao > 7) linhas[linhas.length - 1] = { j: lista[posicao - 1], pos: posicao };
+
+      elLista.textContent = "";
+      linhas.forEach(function (l) {
+        const linha = document.createElement("div");
+        linha.className = "rank-linha" + (l.j.voce ? " voce" : "");
+
+        const sPos = document.createElement("span");
+        sPos.className = "rank-posicao";
+        sPos.textContent = l.pos + "º";
+
+        const sAv = document.createElement("span");
+        sAv.className = "rank-avatar";
+        sAv.textContent = l.j.avatar;
+
+        const sNome = document.createElement("span");
+        sNome.className = "rank-nome";
+        sNome.textContent = l.j.nome + " ";
+        if (l.j.voce) {
+          const tag = document.createElement("span");
+          tag.className = "tag-voce";
+          tag.textContent = "você";
+          sNome.appendChild(tag);
+        }
+
+        const sPts = document.createElement("span");
+        sPts.className = "rank-pontos";
+        sPts.textContent = l.j.pontos + " pts";
+
+        linha.appendChild(sPos);
+        linha.appendChild(sAv);
+        linha.appendChild(sNome);
+        linha.appendChild(sPts);
+        elLista.appendChild(linha);
+      });
+    }
+
+    // texto usado pelo botão "Compartilhar Resultado"
+    const acertos = resultados.filter(Boolean).length;
+    textoCompartilhar = "Joguei Verdade ou Bug (Tech Trivia): acertei " + acertos + "/" +
+      perguntas.length + ", fiz " + pontosTotal + " pts e fiquei em " + posicao + "º lugar! 🚀";
   }
 
   /* -------------------------------------------------------------
@@ -382,9 +518,15 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   botaoCompartilhar.addEventListener("click", function () {
-    const textoResumo = "Joguei o Tech Trivia (Verdade ou Bug) e me saí bem! 🚀";
+    // Correção — Marcelo Ludin: texto agora usa a pontuação real (antes era sempre "me saí bem")
+    const textoResumo = textoCompartilhar || "Joguei o Tech Trivia (Verdade ou Bug)! 🚀";
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(textoResumo).catch(function () {
+      navigator.clipboard.writeText(textoResumo).then(function () {
+        // Correção — Marcelo Ludin: avisa o usuário que copiou (antes não havia retorno nenhum)
+        const textoOriginal = botaoCompartilhar.textContent;
+        botaoCompartilhar.textContent = "Copiado! ✔";
+        setTimeout(function () { botaoCompartilhar.textContent = textoOriginal; }, 1500);
+      }).catch(function () {
         /* se o navegador bloquear a cópia, apenas ignora silenciosamente */
       });
     }
