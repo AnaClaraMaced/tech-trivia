@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   botaoComecarQuiz.addEventListener("click", function () {
+    resetarQuiz(); // Alteração — Marcelo Ludin: começa sempre da pergunta 1
     mostrarTela("quiz-screen");
     iniciarCronometro();
   });
@@ -179,9 +180,175 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    pararCronometro();
-    mostrarTela("resultado-screen");
+    // Alteração — Marcelo Ludin: antes ia direto pro resultado; agora
+    // registra acerto/erro e só vai pro resultado após a 10ª pergunta.
+    registrarResposta();
   });
+
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 1 — Marcelo Ludin
+     Lista das 10 perguntas (verdadeiro/falso). O HTML só tinha a
+     pergunta 1 escrita, então as outras ficam aqui no JS e o texto
+     da mesma caixa de pergunta é trocado a cada "Próxima".
+     "resposta: true" = Verdadeiro, "false" = Falso.
+     ------------------------------------------------------------- */
+  const perguntas = [
+    { texto: "Java é a mesma coisa que JavaScript?", resposta: false },
+    { texto: "HTML é considerado uma linguagem de programação?", resposta: false },
+    { texto: "O primeiro \"bug\" de computador foi uma mariposa real, encontrada em um Harvard Mark II?", resposta: true },
+    { texto: "O CSS serve para definir o estilo e a aparência de páginas web?", resposta: true },
+    { texto: "O Linux foi criado por Linus Torvalds?", resposta: true },
+    { texto: "A memória RAM guarda os dados para sempre, mesmo com o computador desligado?", resposta: false },
+    { texto: "A linguagem Python recebeu esse nome por causa da cobra?", resposta: false },
+    { texto: "O primeiro domínio .com registrado foi symbolics.com?", resposta: true },
+    { texto: "Um bit pode armazenar apenas o valor 0 ou o valor 1?", resposta: true },
+    { texto: "Git e GitHub são exatamente a mesma coisa?", resposta: false }
+  ];
+
+  // estado do quiz (reiniciado em resetarQuiz)
+  let indicePergunta = 0;
+  let resultados = [];      // true = acertou, false = errou (uma posição por pergunta)
+  let pontosTotal = 0;
+
+  // elementos da tela de perguntas que passam a ser atualizados por JS
+  const elContador = document.querySelector("#quiz-screen .contador-pergunta");
+  const elPontuacao = document.querySelector("#quiz-screen .pontuacao");
+  const elBarra = document.querySelector("#quiz-screen .progresso");
+  const elTextoPergunta = document.querySelector("#quiz-screen .pergunta-box h2");
+
+  function limparAlternativas() {
+    alternativas.forEach(function (b) {
+      b.style.borderColor = "";
+      b.style.background = "";
+    });
+    respostaSelecionada = null;
+  }
+
+  // mostra a pergunta atual (texto, contador, barra de progresso e pontos)
+  function carregarPergunta() {
+    const numero = indicePergunta + 1;
+    const total = perguntas.length;
+    if (elContador) elContador.textContent = "Pergunta " + numero + " de " + total;
+    if (elPontuacao) elPontuacao.textContent = "⭐ Pontos: " + pontosTotal;
+    if (elBarra) elBarra.style.width = (numero / total * 100) + "%";
+    if (elTextoPergunta) {
+      elTextoPergunta.textContent = String(numero).padStart(2, "0") + "-) " + perguntas[indicePergunta].texto;
+    }
+    limparAlternativas();
+  }
+
+  function resetarQuiz() {
+    indicePergunta = 0;
+    resultados = [];
+    pontosTotal = 0;
+    carregarPergunta();
+  }
+
+  // confere a resposta marcada, soma pontos e avança (ou finaliza)
+  function registrarResposta() {
+    const escolheuVerdadeiro = respostaSelecionada.textContent.trim() === "Verdadeiro";
+    const acertou = (escolheuVerdadeiro === perguntas[indicePergunta].resposta);
+
+    resultados.push(acertou);
+    if (acertou) pontosTotal += 100; // 100 pts por acerto (como diz a tela inicial)
+
+    if (indicePergunta < perguntas.length - 1) {
+      indicePergunta++;
+      carregarPergunta();
+    } else {
+      pararCronometro();
+      atualizarResultado();
+      mostrarTela("resultado-screen");
+    }
+  }
+
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 2 — Marcelo Ludin
+     Preenche a tela de resultado com os dados reais da partida:
+     acertos, %, anel, nível, tempo, maior sequência, perguntas
+     erradas e os quadradinhos verdes/vermelhos.
+     ------------------------------------------------------------- */
+  function atualizarResultado() {
+    const total = perguntas.length;
+    const acertos = resultados.filter(Boolean).length;
+    const pct = Math.round(acertos / total * 100);
+    const nome = (campoNome.value.trim() || "Usuário");
+
+    // maior sequência de acertos e lista de perguntas erradas
+    let maiorSequencia = 0, sequenciaAtual = 0, erradas = [];
+    resultados.forEach(function (ok, i) {
+      if (ok) {
+        sequenciaAtual++;
+        if (sequenciaAtual > maiorSequencia) maiorSequencia = sequenciaAtual;
+      } else {
+        sequenciaAtual = 0;
+        erradas.push(String(i + 1).padStart(2, "0"));
+      }
+    });
+
+    // número grande dentro do anel + percentual
+    const elPontosAnel = document.querySelector("#resultado-screen .anel-pontos");
+    const elPercentual = document.querySelector("#resultado-screen .anel-percentual");
+    if (elPontosAnel) elPontosAnel.innerHTML = acertos + "<small>/" + total + "</small>";
+    if (elPercentual) elPercentual.textContent = pct + "% de acerto";
+
+    // preenchimento do anel (fórmula do CSS: 452 - 452 * %/100)
+    const elAnel = document.querySelector("#resultado-screen .anel-progresso");
+    if (elAnel) elAnel.style.strokeDashoffset = 452 - (452 * pct / 100);
+
+    // frase e nível
+    let frase = "Não desista", nivel = "estagiário de TI";
+    if (pct >= 90) { frase = "Incrível"; nivel = "arquiteto de software"; }
+    else if (pct >= 70) { frase = "Boa"; nivel = "debugger sênior"; }
+    else if (pct >= 50) { frase = "Quase lá"; nivel = "dev júnior"; }
+    const elBadge = document.querySelector("#resultado-screen .nivel-badge");
+    if (elBadge) {
+      elBadge.innerHTML = frase + ", " + nome + "! <span class=\"tag-nivel\">nível: " + nivel + "</span>";
+    }
+
+    // caixa de terminal (4 valores, na ordem em que estão no HTML)
+    const destaques = document.querySelectorAll("#resultado-screen .terminal-box .destaque");
+    if (destaques.length >= 4) {
+      destaques[0].textContent = acertos + "/" + total;
+      destaques[1].textContent = spanTempo ? spanTempo.textContent : "00:00";
+      destaques[2].textContent = maiorSequencia;
+      destaques[3].textContent = erradas.length ? erradas.join(", ") : "nenhum";
+    }
+
+    // quadradinhos da "Sua Sequência de Respostas"
+    const itens = document.querySelectorAll("#resultado-screen .qitem");
+    itens.forEach(function (item, i) {
+      item.classList.remove("acerto", "erro");
+      item.classList.add(resultados[i] ? "acerto" : "erro");
+    });
+  }
+
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 3 — Marcelo Ludin
+     Botão "Voltar" da ready-screen (não tinha nenhum evento):
+     volta para a tela inicial para trocar nome/avatar.
+     ------------------------------------------------------------- */
+  const botaoVoltar = document.querySelector("#ready-screen .btn-secundario");
+  if (botaoVoltar) {
+    botaoVoltar.addEventListener("click", function () {
+      mostrarTela("start-screen");
+    });
+  }
+
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 4 — Marcelo Ludin
+     Botão "Desistir" da quiz-screen (não tinha nenhum evento):
+     pergunta se quer mesmo sair, para o cronômetro e reinicia o
+     jogo voltando para a tela inicial.
+     ------------------------------------------------------------- */
+  const botaoDesistir = document.querySelector("#quiz-screen .btn-desistir");
+  if (botaoDesistir) {
+    botaoDesistir.addEventListener("click", function () {
+      if (confirm("Tem certeza que deseja desistir do quiz?")) {
+        reiniciarJogo();
+      }
+    });
+  }
 
   /* -------------------------------------------------------------
      PASSO 8 — Marcelo Ludin
@@ -248,6 +415,8 @@ document.addEventListener("DOMContentLoaded", function () {
       b.style.background = "";
     });
     respostaSelecionada = null;
+
+    resetarQuiz(); // Alteração — Marcelo Ludin: zera perguntas, pontos e acertos
 
     mostrarTela("start-screen");
   }
