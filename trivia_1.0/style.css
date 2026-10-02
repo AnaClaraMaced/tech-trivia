@@ -521,29 +521,32 @@ button:active {
     margin-top: 6px;
 }
 
-/* linha "Boa, Usuário!" junto com o selo do nível — fica centralizada
-   embaixo do anel de pontuação */
-.nivel-badge {
+/* banner de posição no ranking — fica embaixo do anel de pontuação */
+.ranking-banner {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    gap: 6px 12px;
+    padding: 12px 16px;
+    margin: 0 0 20px 0;
+    border: 1px solid var(--cor-ambar);
+    border-radius: 12px;
+    background: rgba(229, 163, 50, 0.08);
     font-size: 16px;
     font-weight: 600;
     color: var(--cor-texto);
-    margin: 0 0 20px 0;
-    text-align: center;
 }
-/* o "selinho" laranja com o nível alcançado (ex: "nível: debugger sênior") */
-.tag-nivel {
+
+.ranking-posicao strong {
+    color: var(--cor-ambar);
+}
+
+.ranking-falta {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 600;
-    color: #3bd6c2;
-    padding: 2px 8px;
-    border-radius: 100px;
-    margin-left: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(245, 240, 230, 0.6);
 }
 
 /* cor vermelha da palavra [x] no terminal — usada pra marcar erro,
