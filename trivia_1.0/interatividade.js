@@ -145,17 +145,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let respostaSelecionada = null;
 
+  /* -------------------------------------------------------------
+     ALTERAÇÃO 6 — Marcelo Ludin
+     Feedback de cores ao clicar (igual aos sites de quiz, tipo
+     Kahoot/Quizizz): assim que o jogador clica numa alternativa,
+       - a resposta CERTA fica VERDE (classe "certa" do style.css);
+       - se ele errou, a alternativa clicada fica VERMELHA ("errada");
+       - as duas ficam travadas (não dá pra trocar de resposta);
+       - a caixa de explicação aparece na hora, com a explicação
+         daquela pergunta;
+       - os pontos já são atualizados nesse momento.
+     O botão "Próxima →" só passa para a próxima pergunta.
+     Obs.: o HTML já vinha com as classes "certa" e "errada"
+     escritas nos dois botões (por isso apareciam verde e vermelho
+     desde o começo). Elas são removidas por JS em limparAlternativas().
+     ------------------------------------------------------------- */
+  const elExplicacao = document.getElementById("explicacao");
+
   alternativas.forEach(function (botao) {
     botao.addEventListener("click", function () {
-      // desmarca visualmente todas as alternativas
-      alternativas.forEach(function (b) {
-        b.style.borderColor = "";
-        b.style.background = "";
-      });
-      // marca visualmente só a clicada
-      botao.style.borderColor = corDestaque;
-      botao.style.background = "rgba(229, 163, 50, 0.18)";
+      if (respostaSelecionada) return; // já respondeu: ignora novos cliques
       respostaSelecionada = botao;
+
+      const escolheuVerdadeiro = botao.textContent.trim() === "Verdadeiro";
+      const pergunta = perguntas[indicePergunta];
+      const acertou = (escolheuVerdadeiro === pergunta.resposta);
+
+      // guarda o resultado e soma os pontos já no clique
+      resultados.push(acertou);
+      if (acertou) pontosTotal += 100;
+      if (elPontuacao) elPontuacao.textContent = "⭐ Pontos: " + pontosTotal;
+
+      // descobre qual botão é o correto e pinta
+      alternativas.forEach(function (b) {
+        const ehVerdadeiro = b.textContent.trim() === "Verdadeiro";
+        if (ehVerdadeiro === pergunta.resposta) {
+          b.classList.add("certa");      // verde
+        } else if (b === botao) {
+          b.classList.add("errada");     // vermelho (só o que o jogador clicou)
+        }
+        b.disabled = true;               // trava os dois botões
+      });
+
+      // mostra a explicação logo após responder
+      if (elExplicacao) {
+        elExplicacao.textContent = (acertou ? "✔ Correto! " : "✘ Errado! ") + pergunta.explicacao;
+        elExplicacao.style.display = "block";
+      }
     });
   });
 
@@ -192,17 +228,18 @@ document.addEventListener("DOMContentLoaded", function () {
      da mesma caixa de pergunta é trocado a cada "Próxima".
      "resposta: true" = Verdadeiro, "false" = Falso.
      ------------------------------------------------------------- */
+  // Alteração — Marcelo Ludin: cada pergunta ganhou o campo "explicacao" (mostrado após responder)
   const perguntas = [
-    { texto: "Java é a mesma coisa que JavaScript?", resposta: false },
-    { texto: "HTML é considerado uma linguagem de programação?", resposta: false },
-    { texto: "O primeiro \"bug\" de computador foi uma mariposa real, encontrada em um Harvard Mark II?", resposta: true },
-    { texto: "O CSS serve para definir o estilo e a aparência de páginas web?", resposta: true },
-    { texto: "O Linux foi criado por Linus Torvalds?", resposta: true },
-    { texto: "A memória RAM guarda os dados para sempre, mesmo com o computador desligado?", resposta: false },
-    { texto: "A linguagem Python recebeu esse nome por causa da cobra?", resposta: false },
-    { texto: "O primeiro domínio .com registrado foi symbolics.com?", resposta: true },
-    { texto: "Um bit pode armazenar apenas o valor 0 ou o valor 1?", resposta: true },
-    { texto: "Git e GitHub são exatamente a mesma coisa?", resposta: false }
+    { texto: "Java é a mesma coisa que JavaScript?", resposta: false, explicacao: "São linguagens diferentes: o nome parecido foi só marketing. Java é compilada e usada em apps e servidores; JavaScript roda principalmente no navegador." },
+    { texto: "HTML é considerado uma linguagem de programação?", resposta: false, explicacao: "HTML é uma linguagem de marcação: ela estrutura o conteúdo da página, mas não tem lógica como condições e laços." },
+    { texto: "O primeiro \"bug\" de computador foi uma mariposa real, encontrada em um Harvard Mark II?", resposta: true, explicacao: "Em 1947 uma mariposa foi achada presa num relé do Harvard Mark II e colada no diário de bordo como o \"primeiro bug\" encontrado." },
+    { texto: "O CSS serve para definir o estilo e a aparência de páginas web?", resposta: true, explicacao: "CSS controla cores, fontes, espaçamentos e layout das páginas." },
+    { texto: "O Linux foi criado por Linus Torvalds?", resposta: true, explicacao: "Linus Torvalds criou o kernel Linux em 1991." },
+    { texto: "A memória RAM guarda os dados para sempre, mesmo com o computador desligado?", resposta: false, explicacao: "A RAM é volátil: perde tudo ao desligar. Quem guarda dados de forma permanente é o SSD ou HD." },
+    { texto: "A linguagem Python recebeu esse nome por causa da cobra?", resposta: false, explicacao: "O nome vem do grupo de humor britânico Monty Python, e não da cobra." },
+    { texto: "O primeiro domínio .com registrado foi symbolics.com?", resposta: true, explicacao: "Foi registrado em 15 de março de 1985 e é considerado o primeiro domínio .com." },
+    { texto: "Um bit pode armazenar apenas o valor 0 ou o valor 1?", resposta: true, explicacao: "Bit é a menor unidade de informação do computador e só assume 0 ou 1." },
+    { texto: "Git e GitHub são exatamente a mesma coisa?", resposta: false, explicacao: "Git é o sistema de controle de versão; GitHub é uma plataforma online que hospeda repositórios Git." }
   ];
 
   // estado do quiz (reiniciado em resetarQuiz)
@@ -217,12 +254,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const elTextoPergunta = document.querySelector("#quiz-screen .pergunta-box h2");
 
   function limparAlternativas() {
+    // Alteração — Marcelo Ludin: além de limpar o estilo, remove as cores
+    // (certa/errada), destrava os botões e esconde a explicação.
     alternativas.forEach(function (b) {
       b.style.borderColor = "";
       b.style.background = "";
+      b.classList.remove("certa", "errada");
+      b.disabled = false;
     });
+    if (elExplicacao) elExplicacao.style.display = "none";
     respostaSelecionada = null;
   }
+
+  // Alteração — Marcelo Ludin: limpa já na abertura da página, para tirar o
+  // verde/vermelho e a explicação que vinham fixos no HTML.
+  limparAlternativas();
 
   // mostra a pergunta atual (texto, contador, barra de progresso e pontos)
   function carregarPergunta() {
@@ -246,12 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // confere a resposta marcada, soma pontos e avança (ou finaliza)
   function registrarResposta() {
-    const escolheuVerdadeiro = respostaSelecionada.textContent.trim() === "Verdadeiro";
-    const acertou = (escolheuVerdadeiro === perguntas[indicePergunta].resposta);
-
-    resultados.push(acertou);
-    if (acertou) pontosTotal += 100; // 100 pts por acerto (como diz a tela inicial)
-
+    // Alteração — Marcelo Ludin: o acerto/erro e os pontos (100 por acerto) agora
+    // são computados no clique da alternativa (ALTERAÇÃO 6). Aqui só avança.
     if (indicePergunta < perguntas.length - 1) {
       indicePergunta++;
       carregarPergunta();
