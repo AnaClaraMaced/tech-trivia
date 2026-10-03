@@ -143,56 +143,122 @@ document.addEventListener("DOMContentLoaded", function () {
   const corDestaque = getComputedStyle(document.documentElement)
     .getPropertyValue("--cor-ambar").trim() || "#e5a332";
 
-  let respostaSelecionada = null;
+  let respostaSelecionada = null;  // alternativa só MARCADA (ainda não confirmada)
+  let respostaConfirmada = false;  // vira true depois de clicar em "Confirmar resposta"
 
   /* -------------------------------------------------------------
-     ALTERAÇÃO 6 — Marcelo Ludin
-     Feedback de cores ao clicar (igual aos sites de quiz, tipo
-     Kahoot/Quizizz): assim que o jogador clica numa alternativa,
-       - a resposta CERTA fica VERDE (classe "certa" do style.css);
-       - se ele errou, a alternativa clicada fica VERMELHA ("errada");
-       - as duas ficam travadas (não dá pra trocar de resposta);
-       - a caixa de explicação aparece na hora, com a explicação
-         daquela pergunta;
-       - os pontos já são atualizados nesse momento.
-     O botão "Próxima →" só passa para a próxima pergunta.
-     Obs.: o HTML já vinha com as classes "certa" e "errada"
-     escritas nos dois botões (por isso apareciam verde e vermelho
-     desde o começo). Elas são removidas por JS em limparAlternativas().
+     ALTERAÇÃO 7 — Marcelo Ludin  (RQ06 e RQ07)
+     Marcar x Confirmar. Mudança em relação à versão anterior:
+       - clicar em Verdadeiro/Falso agora só MARCA a alternativa
+         (destaque âmbar). NÃO mostra certo/errado, NÃO trava e dá
+         pra trocar de ideia quantas vezes quiser;
+       - foi criado por JS o botão "Confirmar resposta" (o HTML não
+         foi alterado). Só ao clicar nele aparece:
+           * verde na certa / vermelho na que o jogador marcou errado
+           * se acertou ou errou
+           * a explicação (curiosidade)
+           * o link da fonte
+         e só aí os pontos sobem e o botão "Próxima →" aparece;
+       - a categoria da pergunta aparece em cima da pergunta.
      ------------------------------------------------------------- */
   const elExplicacao = document.getElementById("explicacao");
 
+  // botão "Confirmar resposta" (criado aqui, logo abaixo das alternativas)
+  const boxAlternativas = document.querySelector("#quiz-screen .alternativas");
+  const botaoConfirmar = document.createElement("button");
+  botaoConfirmar.type = "button";
+  botaoConfirmar.className = "btn-primario btn-confirmar";
+  botaoConfirmar.textContent = "Confirmar resposta";
+  botaoConfirmar.style.width = "100%";
+  botaoConfirmar.style.marginTop = "14px";
+  boxAlternativas.insertAdjacentElement("afterend", botaoConfirmar);
+
+  // categoria da pergunta (criada aqui, no topo da caixa da pergunta)
+  const caixaPergunta = document.querySelector("#quiz-screen .pergunta-box");
+  const elCategoria = document.createElement("p");
+  elCategoria.className = "categoria-pergunta";
+  elCategoria.style.cssText = "margin:0 0 10px 0;text-align:center;font-family:'JetBrains Mono',monospace;" +
+    "font-size:13px;letter-spacing:0.04em;color:" + corDestaque + ";";
+  caixaPergunta.insertBefore(elCategoria, caixaPergunta.firstChild);
+
+  // cria o link da fonte (usado na explicação do quiz e no popup dos hexágonos)
+  function criarLinkFonte(pergunta) {
+    const a = document.createElement("a");
+    a.href = pergunta.fonte.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = "🔗 Fonte: " + pergunta.fonte.texto;
+    a.style.color = corDestaque;
+    a.style.wordBreak = "break-word";
+    return a;
+  }
+
+  // 1) clique na alternativa = só marca
   alternativas.forEach(function (botao) {
     botao.addEventListener("click", function () {
-      if (respostaSelecionada) return; // já respondeu: ignora novos cliques
-      respostaSelecionada = botao;
-
-      const escolheuVerdadeiro = botao.textContent.trim() === "Verdadeiro";
-      const pergunta = perguntas[indicePergunta];
-      const acertou = (escolheuVerdadeiro === pergunta.resposta);
-
-      // guarda o resultado e soma os pontos já no clique
-      resultados.push(acertou);
-      if (acertou) pontosTotal += 100;
-      if (elPontuacao) elPontuacao.textContent = "⭐ Pontos: " + pontosTotal;
-
-      // descobre qual botão é o correto e pinta
+      if (respostaConfirmada) return; // depois de confirmar não muda mais
       alternativas.forEach(function (b) {
-        const ehVerdadeiro = b.textContent.trim() === "Verdadeiro";
-        if (ehVerdadeiro === pergunta.resposta) {
-          b.classList.add("certa");      // verde
-        } else if (b === botao) {
-          b.classList.add("errada");     // vermelho (só o que o jogador clicou)
-        }
-        b.disabled = true;               // trava os dois botões
+        b.style.borderColor = "";
+        b.style.background = "";
       });
-
-      // mostra a explicação logo após responder
-      if (elExplicacao) {
-        elExplicacao.textContent = (acertou ? "✔ Correto! " : "✘ Errado! ") + pergunta.explicacao;
-        elExplicacao.style.display = "block";
-      }
+      botao.style.borderColor = corDestaque;
+      botao.style.background = "rgba(229, 163, 50, 0.18)";
+      respostaSelecionada = botao;
     });
+  });
+
+  // 2) clique em "Confirmar resposta" = revela o resultado
+  botaoConfirmar.addEventListener("click", function () {
+    if (respostaConfirmada) return;
+
+    // não marcou nada: pisca o contorno vermelho e pede pra escolher
+    if (!respostaSelecionada) {
+      boxAlternativas.style.outline = "2px solid #e2665f";
+      setTimeout(function () { boxAlternativas.style.outline = ""; }, 600);
+      return;
+    }
+    respostaConfirmada = true;
+
+    const escolheuVerdadeiro = respostaSelecionada.textContent.trim() === "Verdadeiro";
+    const pergunta = perguntas[indicePergunta];
+    const acertou = (escolheuVerdadeiro === pergunta.resposta);
+
+    // guarda o resultado (e o que o jogador marcou) e soma os pontos
+    resultados[indicePergunta] = acertou;
+    escolhas[indicePergunta] = escolheuVerdadeiro;
+    if (acertou) pontosTotal += 100;
+    if (elPontuacao) elPontuacao.textContent = "⭐ Pontos: " + pontosTotal;
+
+    // pinta: certa = verde; a marcada errada = vermelha; trava os dois botões
+    alternativas.forEach(function (b) {
+      const ehVerdadeiro = b.textContent.trim() === "Verdadeiro";
+      b.style.borderColor = "";  // tira o destaque âmbar pra cor do CSS valer
+      b.style.background = "";
+      if (ehVerdadeiro === pergunta.resposta) {
+        b.classList.add("certa");
+      } else if (b === respostaSelecionada) {
+        b.classList.add("errada");
+      }
+      b.disabled = true;
+    });
+
+    // explicação + fonte
+    if (elExplicacao) {
+      elExplicacao.textContent = "";
+      const titulo = document.createElement("strong");
+      titulo.textContent = acertou ? "✔ Você acertou!" : "✘ Você errou!";
+      titulo.style.color = acertou ? "#5be8a0" : "#e2665f";
+      elExplicacao.appendChild(titulo);
+      elExplicacao.appendChild(document.createElement("br"));
+      elExplicacao.appendChild(document.createTextNode(pergunta.explicacao));
+      elExplicacao.appendChild(document.createElement("br"));
+      elExplicacao.appendChild(criarLinkFonte(pergunta));
+      elExplicacao.style.display = "block";
+    }
+
+    // troca "Confirmar" por "Próxima"
+    botaoConfirmar.style.display = "none";
+    botaoProxima.style.visibility = "visible";
   });
 
   /* -------------------------------------------------------------
@@ -204,7 +270,8 @@ document.addEventListener("DOMContentLoaded", function () {
      de resultado — sem inventar/criar novas perguntas no HTML.
      ------------------------------------------------------------- */
   botaoProxima.addEventListener("click", function () {
-    if (!respostaSelecionada) {
+    // Alteração — Marcelo Ludin: agora exige resposta CONFIRMADA (não só marcada)
+    if (!respostaConfirmada) {
       // pequeno aviso visual pra lembrar de responder antes de avançar
       const caixaAlternativas = document.querySelector("#quiz-screen .alternativas");
       if (caixaAlternativas) {
@@ -228,23 +295,86 @@ document.addEventListener("DOMContentLoaded", function () {
      da mesma caixa de pergunta é trocado a cada "Próxima".
      "resposta: true" = Verdadeiro, "false" = Falso.
      ------------------------------------------------------------- */
-  // Alteração — Marcelo Ludin: cada pergunta ganhou o campo "explicacao" (mostrado após responder)
+  // Alteração — Marcelo Ludin: cada pergunta ganhou o campo "explicacao" (mostrado só após CONFIRMAR a resposta)
+  // Alteração — Marcelo Ludin: cada pergunta agora tem também "categoria" e "fonte" (link)
+  // além da "explicacao". São exibidos só depois de CONFIRMAR a resposta (RQ06/RQ07).
   const perguntas = [
-    { texto: "Java é a mesma coisa que JavaScript?", resposta: false, explicacao: "São linguagens diferentes: o nome parecido foi só marketing. Java é compilada e usada em apps e servidores; JavaScript roda principalmente no navegador." },
-    { texto: "HTML é considerado uma linguagem de programação?", resposta: false, explicacao: "HTML é uma linguagem de marcação: ela estrutura o conteúdo da página, mas não tem lógica como condições e laços." },
-    { texto: "O primeiro \"bug\" de computador foi uma mariposa real, encontrada em um Harvard Mark II?", resposta: true, explicacao: "Em 1947 uma mariposa foi achada presa num relé do Harvard Mark II e colada no diário de bordo como o \"primeiro bug\" encontrado." },
-    { texto: "O CSS serve para definir o estilo e a aparência de páginas web?", resposta: true, explicacao: "CSS controla cores, fontes, espaçamentos e layout das páginas." },
-    { texto: "O Linux foi criado por Linus Torvalds?", resposta: true, explicacao: "Linus Torvalds criou o kernel Linux em 1991." },
-    { texto: "A memória RAM guarda os dados para sempre, mesmo com o computador desligado?", resposta: false, explicacao: "A RAM é volátil: perde tudo ao desligar. Quem guarda dados de forma permanente é o SSD ou HD." },
-    { texto: "A linguagem Python recebeu esse nome por causa da cobra?", resposta: false, explicacao: "O nome vem do grupo de humor britânico Monty Python, e não da cobra." },
-    { texto: "O primeiro domínio .com registrado foi symbolics.com?", resposta: true, explicacao: "Foi registrado em 15 de março de 1985 e é considerado o primeiro domínio .com." },
-    { texto: "Um bit pode armazenar apenas o valor 0 ou o valor 1?", resposta: true, explicacao: "Bit é a menor unidade de informação do computador e só assume 0 ou 1." },
-    { texto: "Git e GitHub são exatamente a mesma coisa?", resposta: false, explicacao: "Git é o sistema de controle de versão; GitHub é uma plataforma online que hospeda repositórios Git." }
+    {
+      texto: "Java é a mesma coisa que JavaScript?",
+      resposta: false,
+      categoria: "Linguagens de programação",
+      explicacao: "São linguagens diferentes: o nome parecido foi só marketing. Java é compilada e usada em apps e servidores; JavaScript roda principalmente no navegador.",
+      fonte: { texto: "Wikipédia — JavaScript", url: "https://pt.wikipedia.org/wiki/JavaScript" }
+    },
+    {
+      texto: "HTML é considerado uma linguagem de programação?",
+      resposta: false,
+      categoria: "Web — HTML",
+      explicacao: "HTML é uma linguagem de marcação: ela estrutura o conteúdo da página, mas não tem lógica como condições e laços.",
+      fonte: { texto: "Wikipédia — HTML", url: "https://pt.wikipedia.org/wiki/HTML" }
+    },
+    {
+      texto: "O primeiro \"bug\" de computador foi uma mariposa real, encontrada em um Harvard Mark II?",
+      resposta: true,
+      categoria: "História da computação",
+      explicacao: "Em 1947 uma mariposa foi achada presa num relé do Harvard Mark II e colada no diário de bordo como o \"primeiro bug\" encontrado.",
+      fonte: { texto: "Wikipedia — Software bug", url: "https://en.wikipedia.org/wiki/Software_bug" }
+    },
+    {
+      texto: "O CSS serve para definir o estilo e a aparência de páginas web?",
+      resposta: true,
+      categoria: "Web — CSS",
+      explicacao: "CSS controla cores, fontes, espaçamentos e layout das páginas.",
+      fonte: { texto: "Wikipédia — CSS", url: "https://pt.wikipedia.org/wiki/Cascading_Style_Sheets" }
+    },
+    {
+      texto: "O Linux foi criado por Linus Torvalds?",
+      resposta: true,
+      categoria: "Sistemas operacionais",
+      explicacao: "Linus Torvalds criou o kernel Linux em 1991.",
+      fonte: { texto: "Wikipédia — Linux", url: "https://pt.wikipedia.org/wiki/Linux" }
+    },
+    {
+      texto: "A memória RAM guarda os dados para sempre, mesmo com o computador desligado?",
+      resposta: false,
+      categoria: "Hardware",
+      explicacao: "A RAM é volátil: perde tudo ao desligar. Quem guarda dados de forma permanente é o SSD ou HD.",
+      fonte: { texto: "Wikipédia — Memória RAM", url: "https://pt.wikipedia.org/wiki/Mem%C3%B3ria_de_acesso_aleat%C3%B3rio" }
+    },
+    {
+      texto: "A linguagem Python recebeu esse nome por causa da cobra?",
+      resposta: false,
+      categoria: "Linguagens de programação",
+      explicacao: "O nome vem do grupo de humor britânico Monty Python, e não da cobra.",
+      fonte: { texto: "Wikipédia — Python", url: "https://pt.wikipedia.org/wiki/Python" }
+    },
+    {
+      texto: "O primeiro domínio .com registrado foi symbolics.com?",
+      resposta: true,
+      categoria: "Internet",
+      explicacao: "Foi registrado em 15 de março de 1985 e é considerado o primeiro domínio .com.",
+      fonte: { texto: "Wikipedia — .com", url: "https://en.wikipedia.org/wiki/.com" }
+    },
+    {
+      texto: "Um bit pode armazenar apenas o valor 0 ou o valor 1?",
+      resposta: true,
+      categoria: "Fundamentos da computação",
+      explicacao: "Bit é a menor unidade de informação do computador e só assume 0 ou 1.",
+      fonte: { texto: "Wikipédia — Bit", url: "https://pt.wikipedia.org/wiki/Bit" }
+    },
+    {
+      texto: "Git e GitHub são exatamente a mesma coisa?",
+      resposta: false,
+      categoria: "Ferramentas de desenvolvimento",
+      explicacao: "Git é o sistema de controle de versão; GitHub é uma plataforma online que hospeda repositórios Git.",
+      fonte: { texto: "Wikipédia — Git", url: "https://pt.wikipedia.org/wiki/Git" }
+    }
   ];
 
   // estado do quiz (reiniciado em resetarQuiz)
   let indicePergunta = 0;
   let resultados = [];      // true = acertou, false = errou (uma posição por pergunta)
+  let escolhas = [];        // Alteração — Marcelo Ludin: true = marcou Verdadeiro, false = Falso, null = não respondeu
   let pontosTotal = 0;
 
   // elementos da tela de perguntas que passam a ser atualizados por JS
@@ -264,6 +394,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     if (elExplicacao) elExplicacao.style.display = "none";
     respostaSelecionada = null;
+    // Alteração — Marcelo Ludin: volta ao estado "ainda não confirmou"
+    respostaConfirmada = false;
+    botaoConfirmar.style.display = "";            // mostra o Confirmar
+    botaoProxima.style.visibility = "hidden";     // esconde o Próxima até confirmar
   }
 
   // Alteração — Marcelo Ludin: limpa já na abertura da página, para tirar o
@@ -280,12 +414,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (elTextoPergunta) {
       elTextoPergunta.textContent = String(numero).padStart(2, "0") + "-) " + perguntas[indicePergunta].texto;
     }
+    // Alteração — Marcelo Ludin: categoria da pergunta e texto do botão na última
+    if (elCategoria) elCategoria.textContent = "🏷 Categoria: " + perguntas[indicePergunta].categoria;
+    botaoProxima.textContent = (numero === total) ? "Ver resultado →" : "Próxima →";
     limparAlternativas();
   }
 
   function resetarQuiz() {
     indicePergunta = 0;
     resultados = [];
+    escolhas = [];
     pontosTotal = 0;
     carregarPergunta();
   }
@@ -293,7 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // confere a resposta marcada, soma pontos e avança (ou finaliza)
   function registrarResposta() {
     // Alteração — Marcelo Ludin: o acerto/erro e os pontos (100 por acerto) agora
-    // são computados no clique da alternativa (ALTERAÇÃO 6). Aqui só avança.
+    // são computados ao clicar em "Confirmar resposta" (ALTERAÇÃO 7). Aqui só avança.
     if (indicePergunta < perguntas.length - 1) {
       indicePergunta++;
       carregarPergunta();
@@ -502,6 +640,127 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* -------------------------------------------------------------
+     ALTERAÇÃO 10 — Marcelo Ludin
+     Hexágonos 01–10 da tela de Performance clicáveis. Ao clicar (ou
+     usar Enter/Espaço), abre um popup simples com: a pergunta, a
+     categoria, se acertou/errou/não respondeu, o que o jogador
+     marcou, a resposta certa, a explicação e o link da fonte.
+     Fecha no botão "Fechar", clicando fora do quadro ou com ESC.
+     Tudo criado por JS (HTML e CSS não foram alterados).
+     ------------------------------------------------------------- */
+  const hexagonos = document.querySelectorAll("#resultado-screen .qitem");
+  let modalPergunta = null;
+  let hexagonoAberto = null;
+
+  function teclaDoModal(evento) {
+    if (evento.key === "Escape") fecharModalPergunta();
+  }
+
+  function fecharModalPergunta() {
+    if (!modalPergunta) return;
+    modalPergunta.remove();
+    modalPergunta = null;
+    document.removeEventListener("keydown", teclaDoModal);
+    if (hexagonoAberto) hexagonoAberto.focus(); // devolve o foco pro hexágono
+  }
+
+  // helper pra criar um parágrafo de texto simples dentro do popup
+  function linhaModal(texto, estilo) {
+    const el = document.createElement("p");
+    el.textContent = texto;
+    el.style.cssText = "margin:0 0 10px 0;line-height:1.5;font-size:14px;" + (estilo || "");
+    return el;
+  }
+
+  function abrirModalPergunta(indice) {
+    const pergunta = perguntas[indice];
+    if (!pergunta || resultados[indice] === undefined) return; // ainda sem resultado
+    fecharModalPergunta();
+
+    const acertou = resultados[indice] === true;
+    const naoRespondeu = escolhas[indice] === null || escolhas[indice] === undefined;
+    const nomeOpcao = function (v) { return v ? "Verdadeiro" : "Falso"; };
+
+    // fundo escuro que cobre a tela
+    const fundo = document.createElement("div");
+    fundo.style.cssText = "position:fixed;top:0;right:0;bottom:0;left:0;z-index:1000;display:flex;" +
+      "align-items:center;justify-content:center;padding:20px;background:rgba(10,4,24,0.78);";
+    fundo.addEventListener("click", function (evento) {
+      if (evento.target === fundo) fecharModalPergunta(); // clicou fora do quadro
+    });
+
+    // quadro do popup
+    const caixa = document.createElement("div");
+    caixa.setAttribute("role", "dialog");
+    caixa.setAttribute("aria-modal", "true");
+    caixa.setAttribute("aria-label", "Pergunta " + (indice + 1));
+    caixa.style.cssText = "width:100%;max-width:460px;max-height:85vh;overflow-y:auto;box-sizing:border-box;" +
+      "padding:22px;border-radius:14px;color:#f6f5fc;font-family:'Inter',sans-serif;" +
+      "background:#3b1566;border:1px solid rgba(245,240,230,0.2);box-shadow:0 20px 50px rgba(0,0,0,0.5);";
+
+    caixa.appendChild(linhaModal("Pergunta " + String(indice + 1).padStart(2, "0") + " de " + perguntas.length,
+      "font-family:'JetBrains Mono',monospace;font-size:13px;color:" + corDestaque + ";"));
+    caixa.appendChild(linhaModal("🏷 Categoria: " + pergunta.categoria, "font-size:13px;opacity:0.85;"));
+    caixa.appendChild(linhaModal(pergunta.texto, "font-size:19px;font-weight:bold;line-height:1.4;margin-bottom:14px;"));
+
+    // situação: acertou / errou / não respondeu (desistiu)
+    let situacao = acertou ? "✔ Você acertou!" : "✘ Você errou!";
+    if (naoRespondeu) situacao = "✘ Não respondida (conta como errada)";
+    caixa.appendChild(linhaModal(situacao, "font-weight:bold;color:" + (acertou ? "#5be8a0" : "#e2665f") + ";"));
+    if (!naoRespondeu) caixa.appendChild(linhaModal("Sua resposta: " + nomeOpcao(escolhas[indice])));
+    caixa.appendChild(linhaModal("Resposta correta: " + nomeOpcao(pergunta.resposta)));
+
+    // explicação + fonte
+    caixa.appendChild(linhaModal(pergunta.explicacao,
+      "padding:12px 14px;border-left:3px solid " + corDestaque + ";border-radius:8px;background:rgba(245,240,230,0.07);"));
+    const pFonte = linhaModal("");
+    pFonte.appendChild(criarLinkFonte(pergunta));
+    caixa.appendChild(pFonte);
+
+    const botaoFechar = document.createElement("button");
+    botaoFechar.type = "button";
+    botaoFechar.className = "btn-primario";
+    botaoFechar.textContent = "Fechar";
+    botaoFechar.style.cssText = "width:100%;margin-top:6px;";
+    botaoFechar.addEventListener("click", fecharModalPergunta);
+    caixa.appendChild(botaoFechar);
+
+    fundo.appendChild(caixa);
+    document.body.appendChild(fundo);
+    modalPergunta = fundo;
+    document.addEventListener("keydown", teclaDoModal);
+    botaoFechar.focus();
+  }
+
+  // deixa cada hexágono clicável (mouse, toque e teclado)
+  hexagonos.forEach(function (hex, indice) {
+    hex.style.cursor = "pointer";
+    hex.setAttribute("role", "button");
+    hex.setAttribute("tabindex", "0");
+    hex.setAttribute("title", "Ver a pergunta " + (indice + 1));
+    hex.addEventListener("click", function () {
+      hexagonoAberto = hex;
+      abrirModalPergunta(indice);
+    });
+    hex.addEventListener("keydown", function (evento) {
+      if (evento.key === "Enter" || evento.key === " ") {
+        evento.preventDefault();
+        hexagonoAberto = hex;
+        abrirModalPergunta(indice);
+      }
+    });
+  });
+
+  // dica discreta embaixo do título "Sua Sequência de Respostas"
+  const tituloSequencia = document.querySelector("#resultado-screen .qlist-titulo");
+  if (tituloSequencia) {
+    const dica = document.createElement("p");
+    dica.textContent = "Toque em um número para rever a pergunta e a explicação";
+    dica.style.cssText = "margin:-4px 0 10px 0;text-align:center;font-size:12px;opacity:0.65;";
+    tituloSequencia.insertAdjacentElement("afterend", dica);
+  }
+
+  /* -------------------------------------------------------------
      ALTERAÇÃO 3 — Marcelo Ludin
      Botão "Voltar" da ready-screen (não tinha nenhum evento):
      volta para a tela inicial para trocar nome/avatar.
@@ -514,17 +773,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* -------------------------------------------------------------
-     ALTERAÇÃO 4 — Marcelo Ludin
-     Botão "Desistir" da quiz-screen (não tinha nenhum evento):
-     pergunta se quer mesmo sair, para o cronômetro e reinicia o
-     jogo voltando para a tela inicial.
+     ALTERAÇÃO 4 — Marcelo Ludin (comportamento ATUALIZADO pela ALTERAÇÃO 8)
+     Botão "Desistir" da quiz-screen (não tinha nenhum evento).
+     Versão inicial: pedia confirmação e voltava pra tela inicial.
+     Versão atual: vai direto pra tela de Performance (veja abaixo).
      ------------------------------------------------------------- */
   const botaoDesistir = document.querySelector("#quiz-screen .btn-desistir");
   if (botaoDesistir) {
+    /* ---------------------------------------------------------
+       ALTERAÇÃO 8 — Marcelo Ludin (corrige a ALTERAÇÃO 4)
+       "Desistir" NÃO cancela o jogo e NÃO volta pro cadastro:
+       finaliza antes da hora e mostra a tela de Performance com
+       o resultado parcial. As perguntas sem resposta confirmada
+       contam como ERRADAS (hexágono vermelho) e ficam como
+       "não respondida" no popup.
+       --------------------------------------------------------- */
     botaoDesistir.addEventListener("click", function () {
-      if (confirm("Tem certeza que deseja desistir do quiz?")) {
-        reiniciarJogo();
+      pararCronometro();
+      for (let i = 0; i < perguntas.length; i++) {
+        if (resultados[i] === undefined) {
+          resultados[i] = false;  // não respondida = errada
+          escolhas[i] = null;     // guarda que ficou sem resposta
+        }
       }
+      atualizarResultado();
+      mostrarTela("resultado-screen");
     });
   }
 
@@ -532,7 +805,8 @@ document.addEventListener("DOMContentLoaded", function () {
      PASSO 8 — Marcelo Ludin
      Tela 4 (resultado-screen): os dois botões finais.
      "Ver ranking da sessão →" leva pra tela de ranking.
-     "Jogar novamente" reinicia o estado e volta pro começo.
+     "Tentar Novamente" volta pra tela "Começar Quiz" mantendo nome e
+     avatar (ALTERAÇÃO 9 — Marcelo Ludin; antes reiniciava tudo).
      ------------------------------------------------------------- */
   const botaoVerRanking = document.querySelector("#resultado-screen .btn-primario");
   const botaoJogarNovamenteResultado = document.querySelector("#resultado-screen .btn-secundario");
@@ -542,7 +816,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   botaoJogarNovamenteResultado.addEventListener("click", function () {
-    reiniciarJogo();
+    /* ALTERAÇÃO 9 — Marcelo Ludin (corrige o PASSO 8)
+       "Tentar Novamente" vai para a tela 2 ("Começar Quiz"), que já está
+       com o nome e o avatar da pessoa. NÃO chama reiniciarJogo() (que
+       apagava o nome e voltava pro cadastro). O quiz é zerado quando
+       ela clicar em "Começar Quiz" (resetarQuiz). */
+    mostrarTela("ready-screen");
   });
 
   /* -------------------------------------------------------------
@@ -556,6 +835,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const botaoCompartilhar = document.querySelector("#ranking-screen .btn-secundario");
 
   botaoJogarNovamenteRanking.addEventListener("click", function () {
+    // Alteração — Marcelo Ludin: este SIM volta pro cadastro (nome + avatar),
+    // pois é o fluxo "jogar com outra pessoa" depois de ver o ranking.
     reiniciarJogo();
   });
 
