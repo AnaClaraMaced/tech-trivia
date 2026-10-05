@@ -1,7 +1,13 @@
+/* 1. Variáveis de cor
+   2. Base da página (fundo, reset)
+   3. Estrutura geral / compartilhado entre telas
 
-/* variaveis de cor do site por inteiro */
+/* ================================================================
+   1. VARIÁVEIS DE COR
+   ================================================================ */
+ 
 :root {
-    --cor-ambar: #e5a332;
+    --cor-ambar: #c48c2d;
     --cor-violeta: #692b92;
     --cor-mediado: #3b1566;
     --cor-texto: #f6f5fc;
@@ -9,6 +15,10 @@
     --cor-resposta-usuario: #222120;
 }
 
+/* ================================================================
+   2. BASE DA PÁGINA
+   ================================================================ */
+   
 /* ===== fundo da pagina ===== (a tela inteira atras de tudo)
  degrade colorido, grade quadriculada, centraliza tudo no meio da pagina*/
 body {
@@ -17,8 +27,8 @@ body {
   font-family: 'Inter', sans-serif;
   background: 
      linear-gradient(rgba(245, 240, 230, 0.06) 1px, transparent 1px),
-     linear-gradient(90deg, rgba(245, 240, 230, 0.06) 1px, transparent 1px),
-     linear-gradient(140deg, var(--cor-violeta), var(--cor-mediado), var(--cor-ambar));
+     linear-gradient(120deg, rgba(245, 240, 230, 0.06) 1px, transparent 1px),
+     linear-gradient(130deg, var(--cor-violeta), var(--cor-mediado), var(--cor-ambar));
   background-size: 40px 40px, 40px 40px, cover;
   color: var(--cor-texto);
 
@@ -26,6 +36,77 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+/* ================================================================
+   3. ESTRUTURA GERAL / COMPARTILHADO ENTRE TELAS  (tudo que aparece em mais de uma tela fica aqui)
+   ================================================================ */
+
+/* controle de largura maxima e centralização dos conteudos da tela inteira */
+.app {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+ /* quadrado de fundo semi-trasnparente com efeito borrado
+    usados nas telas onde fica o conteudo */
+#start-screen,
+#ready-screen,
+#quiz-screen,
+#resultado-screen,
+#ranking-screen {
+    background: rgba(20, 15, 31, 0.20); 
+    border: 1px solid rgba(245, 240, 230, 0.12); 
+    border-radius: 20px;                 
+    padding: 40px;                       
+    backdrop-filter: blur(16px);       
+    -webkit-backdrop-filter: blur(16px);  
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto 24px auto;  
+
+}
+
+/* cabeçalho (logo + titulo) de cada tela */
+header{
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* ====== o titulo "verdade ou bug"  =======*/
+h1{
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--cor-texto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 12px 0 6px 0;
+    font-size: 44px;
+}
+
+/* ==== a pergunta grande "quanto vc realmente sabe sobre tecnologia?" ====*/
+h2{
+    font-size: 25px;
+    text-align: center;
+}
+
+/* linha "// Curiosidades Sobre Tecnologia" / "// Sua Performance" etc,
+   usada no cabeçalho de várias telas */
+.tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    letter-spacing: 0.05em;
+    color: var(--cor-ambar);
+    text-align: center;
+    margin: 0 0 20px 0;
+}
+
+/* =============================================================
+   fileira dos bagdes  ("// 10 perguntas", "// ~3 minutos" etc)
+   usada na tela de início e na tela "pronto pra começar"
+   =============================================================*/
 
 /* ==== card claro do formulario ==========
    (a caixa bege onde ficam o avatar, o campo de nome e o botão de começar)*/
@@ -158,62 +239,12 @@ input:focus {
     color: var(--cor-ambar);
 }
 
+/* ícones usados dentro dos badges e outras caixinhas */
 .icone {
     width: 16px;
     height: 16px;
     color: var(--cor-ambar);
     flex-shrink: 0;
-}
-
-/* controle de largura maxima e centralização dos conteudos da tela inteira */
-.app {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px 24px;
-}
-
- /* quadrado de fundo semi-trasnparente com efeito borrado
-    usados nas telas onde fica o conteudo */
-#start-screen,
-#ready-screen,
-#quiz-screen,
-#resultado-screen,
-#ranking-screen {
-    background: rgba(20, 15, 31, 0.20); 
-    border: 1px solid rgba(245, 240, 230, 0.12); 
-    border-radius: 20px;                 
-    padding: 40px;                       
-    backdrop-filter: blur(16px);       
-    -webkit-backdrop-filter: blur(16px);  
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); 
-    width: 100%;
-    max-width: 750px;
-    margin: 0 auto 24px auto;  
-
-}
-
-/* cabeçalho (logo + titulo) de cada tela */
-header{
-    text-align: center;
-    margin-bottom: 24px;
-}
-
-/* ====== o titulo "verdade ou bug"  =======*/
-h1{
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--cor-texto);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin: 12px 0 6px 0;
-    font-size: 44px;
-}
-
-/* ==== a pergunta grande "quanto vc realmente sabe sobre tecnologia?" ====*/
-h2{
-    font-size: 25px;
-    text-align: center;
 }
 
 #start-screen main h2 {
@@ -292,7 +323,7 @@ footer p {
 }
 /* as palavras em destaque depois dos dois pontos no terminal */
 .destaque {
-    color: var(--cor-texto);
+    color: #f5f2ee;
 }
 
 /* caixa onde aparece a pergunta */
@@ -401,15 +432,6 @@ footer p {
         #54248b
     );
     border-radius: 10px;
-}
-
-.tagline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 17px;
-    letter-spacing: 0.05em;
-    color: var(--cor-ambar);
-    text-align: center;
-    margin: 0 0 20px 0;
 }
 
 #ready-screen .lista-info {
@@ -858,4 +880,125 @@ button:active {
 .alternativa:disabled {
     cursor: default;
     transform: none;
+}
+
+/* botão fixo de trocar tema, sempre visível no canto, em qualquer tela */
+.btn-tema {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    font-size: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+
+/* ============================================================
+   MODO CLARO — só entra em ação quando o JS adicionar a classe
+   "tema-claro" no <body>.
+   ============================================================ */
+
+/* 1. Redefine as variáveis principais — isso sozinho já muda
+   a cor de boa parte dos textos do site (h1, h2, saudação,
+   números do anel, nomes do ranking, etc), porque eles usam
+   var(--cor-texto) */
+body.tema-claro {
+    --cor-texto: #3b1368;
+}
+
+/* 2. Fundo da página inteira */
+body.tema-claro {
+    background:
+        linear-gradient(rgba(59, 21, 104, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(71, 19, 134, 0.05) 1px, transparent 1px),
+        linear-gradient(140deg, #886bf0, #ca86f1, #f0bb66);
+    background-size: 40px 40px, 40px 40px, cover;
+}
+
+/* 3. Os cards de vidro de cada tela — viram um degradê
+   bege/lilás claro, não branco liso */
+body.tema-claro #start-screen,
+body.tema-claro #ready-screen,
+body.tema-claro #quiz-screen,
+body.tema-claro #resultado-screen,
+body.tema-claro #ranking-screen {
+    background: linear-gradient(160deg, rgba(197, 206, 253, 0.92), rgba(248, 226, 164, 0.88));
+    border: 1px solid rgba(98, 56, 153, 0.253);
+    box-shadow: 0 20px 40px rgba(86, 78, 97, 0.219);
+}
+
+/* 4. A pergunta pequena da tela 1 (ela tinha cor própria,
+   não usava variável, então precisa de ajuste manual) */
+body.tema-claro #start-screen main h2 {
+    color: rgba(49, 14, 92, 0.85);
+}
+
+/* 5. Rodapé */
+body.tema-claro footer p {
+    color: rgba(24, 7, 44, 0.788);
+}
+
+/* 6. Badges "// 10 perguntas" etc */
+body.tema-claro .lista-info li {
+    background-color: rgba(41, 13, 77, 0.05);
+    border-color: rgba(75, 57, 18, 0.16);
+}
+
+/* 7. Caixa da pergunta, no quiz */
+body.tema-claro .pergunta-box {
+    background: rgba(59, 21, 104, 0.04);
+    border-color: rgba(59, 21, 104, 0.12);
+}
+
+/* 8. Botões de alternativa (Verdadeiro/Falso) */
+body.tema-claro .alternativa {
+    background: rgba(59, 21, 104, 0.05);
+    border-color: rgba(59, 21, 104, 0.15);
+}
+
+/* 9. Caixa de explicação, depois de responder */
+body.tema-claro .explicacao {
+    background: rgba(59, 21, 104, 0.04);
+}
+
+/* 10. Cronômetro */
+body.tema-claro .cronometro {
+    background: rgba(59, 21, 104, 0.05);
+    border-color: rgba(59, 21, 104, 0.15);
+}
+
+/* 11. Trilho vazio da barra de progresso */
+body.tema-claro .progresso-container {
+    background: rgba(59, 21, 104, 0.1);
+}
+
+/* 12. Linhas da lista de ranking (4º colocado em diante) */
+body.tema-claro .rank-linha {
+    background: rgba(42, 12, 78, 0.04);
+}
+
+/* 13. Hexágonos de acerto/erro — cores mais escuras,
+   pra continuar legível em fundo claro */
+body.tema-claro .qitem.acerto {
+    background: rgba(25, 122, 74, 0.12);
+    border-color: rgba(26, 133, 79, 0.4);
+    color: #177546;
+}
+body.tema-claro .qitem.erro {
+    background: rgba(201, 74, 64, 0.12);
+    border-color: rgba(201, 74, 64, 0.4);
+    color: #942d25;
+}
+
+/* 14. Botão de tema, versão clara */
+body.tema-claro .btn-tema {
+    background: rgba(41, 29, 29, 0.6);
+    border-color: rgba(59, 21, 104, 0.2);
 }

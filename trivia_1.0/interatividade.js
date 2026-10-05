@@ -887,3 +887,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 });
+
+const botaoTema = document.getElementById('botao-tema');
+botaoTema.addEventListener('click', function () {
+  document.body.classList.toggle('tema-claro');
+  const claro = document.body.classList.contains('tema-claro');
+  botaoTema.setAttribute('aria-label', claro ? 'Alternar para modo escuro' : 'Alternar para modo claro');
+});
