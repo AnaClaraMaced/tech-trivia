@@ -1002,3 +1002,103 @@ body.tema-claro .btn-tema {
     background: rgba(41, 29, 29, 0.6);
     border-color: rgba(59, 21, 104, 0.2);
 }
+/* ===== MODO CLARO: versão 2 (contraste + cores) ===== */
+
+/* botões: âmbar mais escuro pra o texto branco ler bem (vale pros dois modos) */
+button { background: linear-gradient(90deg, #a8741a, #54248b); }
+.btn-primario { background: linear-gradient(90deg, #a8741a, var(--cor-violeta)); }
+.btn-secundario { background: transparent; }
+
+/* placeholder legível (vale pros dois modos) */
+input::placeholder { color: rgba(59, 19, 104, 0.45); }
+
+/* fundo da página */
+body.tema-claro {
+    background:
+        linear-gradient(rgba(59, 21, 104, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(71, 19, 134, 0.05) 1px, transparent 1px),
+        linear-gradient(140deg, #886bf0, #ca86f1, #f3d9a0);
+    background-size: 40px 40px, 40px 40px, cover;
+}
+
+/* cards das telas */
+body.tema-claro #start-screen,
+body.tema-claro #ready-screen,
+body.tema-claro #quiz-screen,
+body.tema-claro #resultado-screen,
+body.tema-claro #ranking-screen {
+    background: linear-gradient(160deg, rgba(251, 247, 238, 0.94), rgba(236, 228, 252, 0.9));
+}
+
+/* botão de tema */
+body.tema-claro .btn-tema {
+    background: #fbf7ee;
+    border: 1px solid rgba(59, 21, 104, 0.3);
+}
+
+/* textos que usavam âmbar claro: versão mais escura pra ter contraste */
+body.tema-claro .tagline,
+body.tema-claro .contador-pergunta,
+body.tema-claro .anel-percentual,
+body.tema-claro .tag-voce,
+body.tema-claro .lista-info li::before,
+body.tema-claro .rank-linha.voce .rank-posicao,
+body.tema-claro .ranking-posicao strong {
+    color: #8a5a00;
+}
+
+/* terminal */
+body.tema-claro .terminal-box {
+    background: rgba(59, 21, 104, 0.08);
+    border-color: rgba(59, 21, 104, 0.18);
+}
+body.tema-claro .terminal-box p { color: #3b1368; }
+body.tema-claro .ok { color: #177546; }
+body.tema-claro .alerta { color: #8a5a00; }
+body.tema-claro .destaque { color: #1d0a38; }
+
+/* textos secundários (antes eram branco translúcido) */
+body.tema-claro .podio-pontos,
+body.tema-claro .rank-pontos,
+body.tema-claro .rank-posicao,
+body.tema-claro .qlist-titulo,
+body.tema-claro .ranking-falta,
+body.tema-claro .anel-pontos small {
+    color: rgba(59, 19, 104, 0.75);
+}
+body.tema-claro .rank-linha.voce .rank-pontos { color: var(--cor-texto); }
+
+/* anel, banner e linha "você" */
+body.tema-claro .anel-trilha { stroke: rgba(59, 21, 104, 0.15); }
+body.tema-claro .ranking-banner { background: rgba(196, 140, 45, 0.15); }
+body.tema-claro .rank-linha.voce { background: rgba(196, 140, 45, 0.18); }
+
+/* botão secundário */
+body.tema-claro .btn-secundario { border-color: rgba(59, 21, 104, 0.35); }
+/* hexágonos mais definidos */
+body.tema-claro .qitem.acerto {
+    background: rgba(25, 122, 74, 0.22);
+    border-color: rgba(26, 133, 79, 0.6);
+    color: #0f5c35;
+}
+body.tema-claro .qitem.erro {
+    background: rgba(201, 74, 64, 0.22);
+    border-color: rgba(201, 74, 64, 0.6);
+    color: #7a1f19;
+}
+
+/* formulário destacado do card */
+body.tema-claro form {
+    border: 1px solid rgba(59, 21, 104, 0.2);
+    box-shadow: 0 6px 18px rgba(59, 21, 104, 0.12);
+}
+
+/* feedback das alternativas */
+body.tema-claro .alternativa.certa {
+    background: rgba(25, 122, 74, 0.22);
+    border-color: #177546;
+}
+body.tema-claro .alternativa.errada {
+    background: rgba(201, 74, 64, 0.22);
+    border-color: #c94a40;
+}
