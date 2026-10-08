@@ -7,9 +7,9 @@
 |Repositório|https://github.com/AnaClaraMaced/tech-trivia.git|
 |Data|M1: 04/10/2026|
 
-\---
+---
 
 # Resumo do Projeto
 **Verdade ou bug** é um trivia de verdadeiro ou falso onde o público são estudantes na amostra de tecnologia. O trivia contém afirmações sobre a área geral da tecnologia, onde o banco guarda as questões com suas respostas, categoria, explicação, nível, fonte bibliográfica e quantidade de pontos de cada pergunta
 
-\---
+---
