@@ -8,8 +8,8 @@ Identifiquem uma vez, neste arquivo copiado para o repositório:
 
 |Campo|Preenchimento|
 |-|-|
-|Equipe||
-|Integrantes||
+|Equipe|   Grupo 4     |
+|Integrantes| Ana Clara Rocha Macedo, Rafael Azevedo dos Santos, Carina Tutihashi, Murilo Santos, Pablo Gonçalves, Marcelo Henrique de Souza Ludin e Lucas Rodrigues |
 |Repositório||
 |Data||
 
