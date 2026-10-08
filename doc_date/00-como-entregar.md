@@ -1,9 +1,5 @@
 # Tech Trivia — Identificação do Projeto
 
-A equipe constrói o banco só de cima para baixo: texto e requisitos, DER, tabelas. A normalização justifica esse desenho.
-
-Identifiquem uma vez, neste arquivo copiado para o repositório:
-
 |Campo|Preenchimento|
 |-|-|
 |Equipe|Grupo 4|
