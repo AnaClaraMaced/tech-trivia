@@ -9,7 +9,7 @@ Identifiquem uma vez, neste arquivo copiado para o repositório:
 |Equipe|Grupo 4|
 |Integrantes|Ana Clara Rocha Macedo, Carina Tutihashi, Marcelo Henrique de Souza Ludin, Murilo Santos, Pablo Gonçalves, Rafael Azevedo dos Santos e Lucas Rodrigues|
 |Repositório|https://github.com/AnaClaraMaced/tech-trivia.git|
-|Data|M1:04/10/2026|
+|Data|M1: 04/10/2026|
 
 \---
 
