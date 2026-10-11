@@ -43,10 +43,14 @@ body {
 
 /* controle de largura maxima e centralização dos conteudos da tela inteira */
 .app {
+    width: 100%;                /* ocupa a largura toda, sem encolher pelo conteúdo */
     max-width: 1000px;
     margin: 0 auto;
     padding: 40px 24px;
+    box-sizing: border-box; 
 }
+    
+
 
  /* quadrado de fundo semi-trasnparente com efeito borrado
     usados nas telas onde fica o conteudo */
@@ -666,15 +670,15 @@ button:active {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 10px;
-    margin: 8px 0 24px 0;
+    gap: 24px;
+    margin: 8px 0 32px 0;
 }
 
 /* O anel giratório dourado — só existe ao redor do avatar
    que estiver dentro dele (ou seja, só o 1º lugar) */
 .avatar-anel-ouro {
-    width: 74px;
-    height: 74px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     background: conic-gradient(from 180deg, #ffd166, var(--cor-mediado), var(--cor-violeta), #ffd166);
     padding: 4px;
@@ -691,19 +695,20 @@ button:active {
     height: 100%;
     margin: 0;
     border: none;
+    font-size: 56px;
 }
 
 
 /* o círculo bege com o emoji do jogador, em cima de cada coluna
    do pódio */
 .podio-avatar {
-    width: 52px;
-    height: 52px;
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 25px;
+    font-size: 40px;
     background: #F5F0E6;
     border: 4px solid var(--cor-ambar);
     margin-bottom: 8px;
@@ -712,7 +717,7 @@ button:active {
 
 /* nome do jogador embaixo do avatar, no pódio */
 .podio-nome {
-    font-size: 14.5px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--cor-texto);
 }
@@ -720,7 +725,7 @@ button:active {
 /* pontuação do jogador, entre o nome e a barra colorida */
 .podio-pontos {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 15px;
     color: rgba(245, 240, 230, 0.6);
     margin-bottom: 4px;
 }
@@ -740,13 +745,13 @@ button:active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 95px;
+    width: 120px;
 }
 
 /* texto "1º lugar", "2º lugar", "👑 1º lugar" acima do avatar */
 .podio-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--cor-texto);
     margin: 0 0 8px 0;
 }
@@ -754,7 +759,7 @@ button:active {
 /* deixa o card do 1º lugar um pouco mais alto que os outros dois,
    já que ele não tem mais a "barra" de degrau colorida */
 .podio-card.primeiro {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
 }
 
 
@@ -929,8 +934,8 @@ body.tema-claro #ready-screen,
 body.tema-claro #quiz-screen,
 body.tema-claro #resultado-screen,
 body.tema-claro #ranking-screen {
-    background: linear-gradient(160deg, rgba(197, 206, 253, 0.92), rgba(248, 226, 164, 0.88));
-    border: 1px solid rgba(98, 56, 153, 0.253);
+    background: linear-gradient(160deg, rgba(142, 156, 226, 0.92), rgba(248, 226, 164, 0.88));
+    border: 1px solid rgba(98, 56, 153, 0.212);
     box-shadow: 0 20px 40px rgba(86, 78, 97, 0.219);
 }
 
@@ -981,7 +986,7 @@ body.tema-claro .progresso-container {
 
 /* 12. Linhas da lista de ranking (4º colocado em diante) */
 body.tema-claro .rank-linha {
-    background: rgba(42, 12, 78, 0.04);
+    background: rgba(42, 12, 78, 0.164);
 }
 
 /* 13. Hexágonos de acerto/erro — cores mais escuras,
@@ -1017,7 +1022,7 @@ body.tema-claro {
     background:
         linear-gradient(rgba(59, 21, 104, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(71, 19, 134, 0.05) 1px, transparent 1px),
-        linear-gradient(140deg, #886bf0, #ca86f1, #f3d9a0);
+        linear-gradient(140deg, #5856ee, #bf6bf0, #f0b944);
     background-size: 40px 40px, 40px 40px, cover;
 }
 
@@ -1027,7 +1032,12 @@ body.tema-claro #ready-screen,
 body.tema-claro #quiz-screen,
 body.tema-claro #resultado-screen,
 body.tema-claro #ranking-screen {
-    background: linear-gradient(160deg, rgba(251, 247, 238, 0.94), rgba(236, 228, 252, 0.9));
+    background: linear-gradient(50deg, rgb(245, 222, 255), rgba(255, 243, 210, 0.9));
+    border: 0,5px solid rgba(63, 19, 92, 0.4);
+    box-shadow:
+        0 20px 40px rgba(146, 29, 224, 0.932),
+        0 0 0 6px rgba(255, 255, 255, 0.452);
+    
 }
 
 /* botão de tema */
@@ -1049,8 +1059,8 @@ body.tema-claro .ranking-posicao strong {
 
 /* terminal */
 body.tema-claro .terminal-box {
-    background: rgba(59, 21, 104, 0.08);
-    border-color: rgba(59, 21, 104, 0.18);
+    background: rgba(58, 21, 104, 0.096);
+    border-color: rgba(58, 21, 104, 0.253);
 }
 body.tema-claro .terminal-box p { color: #3b1368; }
 body.tema-claro .ok { color: #177546; }
@@ -1089,8 +1099,8 @@ body.tema-claro .qitem.erro {
 
 /* formulário destacado do card */
 body.tema-claro form {
-    border: 1px solid rgba(59, 21, 104, 0.2);
-    box-shadow: 0 6px 18px rgba(59, 21, 104, 0.12);
+    border: 1px solid rgba(58, 21, 104, 0.438);
+    box-shadow: 0 6px 18px rgba(58, 21, 104, 0.247);
 }
 
 /* feedback das alternativas */
