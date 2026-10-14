@@ -1,126 +1,66 @@
 # Passos 1 a 3 — Contexto, minimundo e requisitos
 
-Marco M1. Copiem para `entregas/01-contexto.md`.
+Marco M1.
 
 ## 1. Introdução e contexto
 
-# Verdade ou bug é um trivia de verdadeiro ou falso onde o público são estudantes na amostra de tecnologia. O trivia contém afirmações sobre a área geral da tecnologia, onde o banco guarda as questões com suas respostas, categoria, explicação, nível, fonte bibliográfica e quantidade de pontos de cada pergunta
+O **Verdade ou Bug** é um jogo de trivia em formato web (full-stack com HTML/CSS/Vanilla JS e backend Node.js) focado em estudantes e entusiastas do universo da tecnologia. O sistema apresenta afirmações no formato de verdadeiro ou falso, onde o banco de dados armazena as questões, suas alternativas, categorias, explicações, níveis de dificuldade, fontes e pontuações.
 
 ------------------------------------------------------------------------------
-Escopo. Listem só o que o banco faz e o que fica de fora.
+### Escopo
 
 | O banco faz |
+| --- |
+| Armazena o cadastro do usuário (nome, ícone de perfil e data de criação). |
+| Armazena as perguntas de tecnologia, suas categorias, níveis de dificuldade, explicações e fontes bibliográficas. |
+| Armazena as alternativas vinculadas às perguntas e indica qual delas é a correta. |
+| Armazena o histórico de partidas com a pontuação total obtida por cada usuário. |
+| Fornece dados ordenados para a exibição do ranking geral de pontuações. |
+| Realiza o sorteio aleatório de perguntas para cada nova sessão de jogo. |
 
-# Ele guarda as perguntas, a resposta, a categoria, a explicação, o nível de dificuldade, a fonte e quantos pontos vale a questão
-
-# Ele guarda o nome do usuário e quantidade de pontos obtidos
-
-# Ele guarda o ID dos icones 
-
-# Ele guarda a quantidade de pontos que o usuário obteve e o icone utilizado para mostrar no ranking
-
-# Ele guarda o histórico de respostas do usuário e o ranking obtido.
-
-# Ele seleciona aleatoriamente as questões dentro do banco
+| O banco não faz |
+| --- |
+| Não gera novas perguntas automaticamente de forma autônoma. |
+| Não possui interface gráfica própria de gerenciamento administrativo (o cadastro de perguntas é realizado diretamente via scripts ou banco). |
 
 ------------------------------------------------------------------------------
+### Usuários
 
-
-O banco não faz |
+| Usuário / Papel | O que faz |
 | --- | --- |
-
-
-# Não gera questões automaticamente. Quem cadastra é por fora 
-
-# Não possui tela visivel para o usuário
-
-
-------------------------------------------------------------------------------
-Usuários. Quem usa o sistema e o que cada um faz com os dados. Não criem tabela de usuário se nenhum requisito pedir cadastro, senha ou sessão.
-
-| Usuário | O que faz |
-
-# Se registra no sistema, colocando nome e selecionando o ícone de perfil
-
-
+| **Jogador** | Informa seu nome e escolhe um ícone de avatar para se registrar no sistema. |
+| **Jogador** | Responde às 10 perguntas geradas aleatoriamente em sua sessão de jogo. |
+| **Jogador** | Visualiza sua performance detalhada ao finalizar ou desistir da partida. |
+| **Jogador** | Consulta o ranking da sessão para comparar sua pontuação com a dos demais participantes. |
+| **Equipe do Projeto** | Administra e cadastra as perguntas e alternativas oficiais no banco de dados. |
 
 ------------------------------------------------------------------------------
-| Jogador | |
-
-# Responde as perguntas
-
-# Verifica seu resultado
-
-# Pode consultar o rank
-
-# Pode refazer o Trivia para mudar sua pontuação
-
-------------------------------------------------------------------------------
-| Quem cadastra perguntas | |
-
-# Quem cadastra as perguntas são a equipe por trás do Trivia, as pessoas do grupo 4
-
-
-------------------------------------------------------------------------------
-
 
 ## 2. Minimundo
 
-Um ou dois parágrafos, na voz de quem encomenda o sistema. É deste texto que saem as entidades e as regras. Cubram pergunta, categoria, fonte, publicador, idioma e alternativas, inclusive a possibilidade de mais de duas alternativas no futuro.
+O sistema de Trivia inicia na tela de boas-vindas com o registro do nome e a escolha do ícone (avatar) do usuário, cujas informações são cadastradas e armazenadas no banco de dados. Após o acesso, a interface interativa do quiz é exibida para que o usuário responda a perguntas relacionadas à tecnologia. As perguntas estão em português e possuem categoria, nível de dificuldade, explicação pedagógica e fonte de referência, operando com alternativas de verdadeiro ou falso.
 
->O sistema de Trivia deverá iniciar pelo registro do nome e a escolha do ícone do usuário onde as informações do usuário serão cadastradas e armazenadas. Após o acesso, a interface será exibida e o usuário poderá responder perguntas relacionadas à tecnologia. As perguntas serão em português e deverão possuir uma categoria, fonte, opção de verdadeiro ou falso. As categorias serão relacionadas à área de Tecnologia e Inovação, abrangendo diferentes temas do universo tecnológico.
-
-
->O Trivia será dividido em 10 questões por sessão (terão 90 no total e 10 questões aleatórias serão puxadas do banco de dados). A cada etapa concluída, o usuário ganhará 100 pontos por questão acertada, totalizando 1.000 pontos no total caso o usuário acerte todas as questões. O sistema deverá registrar as respostas e a pontuação do usuário. Ao final do Trivia, a pontuação alcançada pelo usuário será exibida, juntamente com um ranking que apresentará sua posição em comparação com os demais participantes.
-
-
+Cada sessão de jogo é composta por 10 questões sorteadas aleatoriamente pelo servidor a partir de um acervo central. A cada resposta correta confirmada, o usuário acumula 100 pontos, totalizando até 1.000 pontos caso acerte todas as questões da sessão. O sistema registra de forma persistente o resultado da partida vinculada ao ID do usuário. Ao término do quiz, a pontuação alcançada e a performance individual são exibidas na tela de resultado, acompanhadas de um ranking dinâmico que apresenta a posição do jogador em comparação com o restante dos participantes.
 
 ## 3. Requisitos e regras de negócio
 
-Cada RD01–RD11 e cada RA01–RA07 entra numa linha. Não deixem código de fora.
-
 | Código | Texto do requisito | Tipo |
 | --- | --- | --- |
-| | | funcional / não funcional / regra de negócio |
-----------------------------------------------------------------------------------------------------------------------------------------------------
-# Código	Texto do requisito	Tipo
-# RD01	O sistema deverá permitir o cadastro do nome e ícone do usuário	                                        |funcional|
-
-# RD02	O sistema deverá exibir a interface principal do Trivia após o cadastro.	                                    |funcional|
-
-# RD03	O sistema deverá apresentar perguntas relacionadas à área de Tecnologia e Inovação.	                        |funcional|
-
-# RD04	O sistema deverá apresentar 10 questões por sessão.	                                                    |funcional|
-
-# RD05	O sistema deverá permitir que o usuário selecione uma alternativa para cada pergunta.	                    |funcional|
-
-# RD06	O sistema deverá registrar as respostas fornecidas pelo usuário.	                                        |funcional|
-
-# RD07	O sistema deverá calcular e exibir a pontuação do usuário.	                                                |funcional|
-
-# RD08	O sistema deverá permitir o acesso às 9 etapas do Trivia.	                                                |funcional|
-
-# RD09	O sistema deverá armazenar as perguntas, suas categorias, fontes, publicadores, idiomas e alternativas.	    |funcional|
-
-# RD10	O sistema deverá apresentar as perguntas no idioma português.	                                            |funcional|
-
-# RD11	O sistema deverá registrar o resultado do usuário ao finalizar as etapas.	                                |funcional|
-
-# RA01	Cada pergunta deverá possuir uma categoria relacionada à área de Tecnologia e Inovação.	                    |regra de negócio|
-
-# RA02	Cada pergunta deverá possuir uma fonte e um publicador.	                                                    |regra de negócio|
- 
-# RA03	Cada pergunta deverá possuir alternativas de resposta. (verdadeiro ou falso)                                |regra de negócio|
-
-# RA04	Cada resposta correta deverá valer 100 pontos.                                                   |regra de negócio|
-
-# RA05	Cada etapa deverá possuir exatamente 10 questões.	                                                        |regra de negócio|
-
-# RA06	O Trivia deverá possuir 9 etapas, totalizando 90 questões.	                                                | regra de negócio |
-
-# RA07	A pontuação máxima do Trivia será de 1.000 pontos, considerando 100 pontos por questão respondida corretamente, em um total de 10 questões por sessão.	|Regra de negócio|
-
-----------------------------------------------------------------------------------------------------------------------------------------------------
-Não funcional inclui, no mínimo, o SGBD e a integridade (o que não pode duplicar nem ficar nulo).
-
-# Os dados obrigatórios das entidades não poderão ficar nulos e os registros que exigem unicidade não poderão ser duplicados.     |não funcional|
+| **RD01** | O sistema deverá permitir o cadastro do nome e do ícone do usuário antes de iniciar o quiz. | Funcional |
+| **RD02** | O sistema deverá exibir a interface principal de perguntas após a confirmação do perfil. | Funcional |
+| **RD03** | O sistema deverá buscar e apresentar perguntas dinâmicas relacionadas à área de Tecnologia e Inovação. | Funcional |
+| **RD04** | O sistema deverá sortear e apresentar exatamente 10 questões por sessão de jogo. | Funcional |
+| **RD05** | O sistema deverá permitir que o usuário selecione uma alternativa (Verdadeiro ou Falso) para cada pergunta. | Funcional |
+| **RD06** | O sistema deverá validar a resposta confirmada pelo usuário, exibindo feedback visual de acerto/erro e a respectiva explicação. | Funcional |
+| **RD07** | O sistema deverá calcular, acumular e exibir a pontuação do usuário em tempo real. | Funcional |
+| **RD08** | O sistema deverá armazenar de forma estruturada as perguntas, categorias, explicações, fontes e alternativas no banco de dados relacional. | Funcional |
+| **RD09** | O sistema deverá registrar a pontuação total da partida na tabela de histórico ao finalizar ou concluir o quiz. | Funcional |
+| **RD10** | O sistema deverá consultar e exibir o ranking ordenado de pontuações dos jogadores. | Funcional |
+| **RA01** | Cada pergunta deverá pertencer a uma categoria específica da área de tecnologia. | Regra de Negócio |
+| **RA02** | Cada pergunta deverá possuir uma fonte bibliográfica ou link de referência oficial. | Regra de Negócio |
+| **RA03** | Cada pergunta deverá possuir um conjunto de alternativas correspondentes (Verdadeiro ou Falso), com apenas uma correta. | Regra de Negócio |
+| **RA04** | Cada resposta correta confirmada deverá valer exatamente 100 pontos. | Regra de Negócio |
+| **RA05** | Cada sessão de partida deverá conter exatamente 10 questões. | Regra de Negócio |
+| **RA06** | A pontuação máxima por sessão de trivia será de 1.000 pontos (10 questões multiplicadas por 100 pontos). | Regra de Negócio |
+| **RNF01** | Os campos obrigatórios das entidades (como nomes, textos de perguntas e IDs de relacionamento) não poderão aceitar valores nulos (`NOT NULL`). | Não Funcional |
+| **RNF02** | O Sistema de Gerenciamento de Banco de Dados relacional utilizado para a persistência dos dados deverá ser o Supabase (PostgreSQL), integrado a uma API backend em Node.js. | Não Funcional |
