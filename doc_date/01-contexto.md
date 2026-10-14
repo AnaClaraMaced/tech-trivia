@@ -4,7 +4,7 @@ Marco M1.
 
 ## 1. Introdução e contexto
 
-O **Verdade ou Bug** é um jogo de trivia em formato web (full-stack com HTML/CSS/Vanilla JS e backend Node.js) focado em estudantes e entusiastas do universo da tecnologia. O sistema apresenta afirmações no formato de verdadeiro ou falso, onde o banco de dados armazena as questões, suas alternativas, categorias, explicações, níveis de dificuldade, fontes e pontuações.
+O **Verdade ou Bug** é um jogo de trivia em formato web (com HTML/CSS/Vanilla JS e backend Node.js) focado em estudantes e entusiastas do universo da tecnologia. O sistema apresenta afirmações no formato de verdadeiro ou falso, onde o banco de dados armazena as questões, suas alternativas, categorias, explicações, níveis de dificuldade, fontes e pontuações.
 
 ------------------------------------------------------------------------------
 ### Escopo
