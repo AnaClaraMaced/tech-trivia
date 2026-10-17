@@ -1,39 +1,25 @@
-# Passos 5 e 6 — Modelo lógico, normalização e dicionário
+# Passo 5 — Modelo lógico
 
-Marco M2. A entrega do passo 5 é o modelo lógico: o desenho em `entregas/03-logico.pdf` (ou `.png`) e este texto em `entregas/03-logico.md`.
+Marco M1. A entrega deste passo é o modelo lógico: o desenho em `entregas/03-logico.pdf` (ou `.png`) e as tabelas de mapeamento abaixo.
 
-O desenho parte do modelo conceitual e mostra tabelas, colunas, chave primária e chaves estrangeiras. Não é outro DER. Pode ser feito no brModelo (modelo lógico) ou no Visual Paradigm Online. Se a normalização achar violação, corrijam o desenho e o texto.
+O modelo lógico traduz o modelo conceitual para tabelas relacionais, especificando chaves primárias (PK), chaves estrangeiras (FK), tipos de dados e cardinalidades (1:N).
 
-## 5. Modelo lógico
+## Mapeamento de Entidades para Tabelas
 
-| Relacionamento no DER | Cardinalidade | Vira | Onde fica a FK ou a tabela associativa |
+| Tabela | Colunas (Atributos, PK e FK) | Tipos de Dados |
+| --- | --- | --- |
+| **icons** | id_icons (PK), icon_name, icon_url | int4, varchar, varchar |
+| **usuarios** | id_usuario (PK), nome, icone_id (FK), criado_em | int4, varchar, int4, timestamptz |
+| **partidas** | id_partida (PK), usuario_id (FK), pontuacao_total, data_partida | int4, int4, int4, timestamptz |
+| **nivel** | id_nivel (PK), dificuldade, pontos | int4, varchar, int2 |
+| **perguntas** | id_perguntas (PK), pergunta, categoria, explicacao, fonte, nivel_id (FK) | int4, text, varchar, varchar, varchar, int4 |
+| **alternativas** | id_alternativas (PK), pergunta_id (FK), texto_alternativa, correta | int4, int4, varchar, bool |
+
+## Relacionamentos e Cardinalidades no Modelo Lógico
+
+| Relacionamento | Cardinalidade | Mapeamento no Modelo Lógico | Requisito |
 | --- | --- | --- | --- |
-| | 1:N / N:N / 1:1 | FK no lado N / tabela associativa | |
-
-N:N vira tabela associativa. 1:N vira chave estrangeira no lado N.
-
-### Normalização
-
-Dependências no formato `determinante → dependente`, com o requisito que sustenta.
-
-| ID | Dependência | Requisito |
-| --- | --- | --- |
-| DF1 | | |
-
-| Forma | Por que o esquema atende | Tabela em que isso aparece |
-| --- | --- | --- |
-| 1FN | Valores atômicos; grupo multivalorado separado | |
-| 2FN | Sem dependência parcial de chave composta. Se não houver chave composta, digam por quê | |
-| 3FN | Sem dependência transitiva. O que não é chave e determina outro atributo está em tabela própria | |
-
-Se alguma forma falhar: o que mudou neste dicionário.
-
-## 6. Dicionário de dados
-
-Repitam o bloco para cada tabela. A descrição diz o que a coluna guarda, em uma linha.
-
-### Tabela: _______________
-
-| Coluna | Tipo e tamanho | Nulo | Restrição | Descrição |
-| --- | --- | --- | --- | --- |
-| | | NULL / NOT NULL | PK / FK → tabela.coluna / UNIQUE / CHECK / DEFAULT | |
+| **icons ➔ usuarios** | 1:N | A tabela `usuarios` recebe a chave estrangeira `icone_id` referenciando `icons(id_icons)`. | RD01 |
+| **usuarios ➔ partidas** | 1:N | A tabela `partidas` recebe a chave estrangeira `usuario_id` referenciando `usuarios(id_usuario)`. | RD02 |
+| **nivel ➔ perguntas** | 1:N | A tabela `perguntas` recebe a chave estrangeira `nivel_id` referenciando `nivel(id_nivel)`. | RD03 |
+| **perguntas ➔ alternativas** | 1:N | A tabela `alternativas` recebe a chave estrangeira `pergunta_id` referenciando `perguntas(id_perguntas)`. | RD04 |
