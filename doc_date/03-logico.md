@@ -1,6 +1,6 @@
 # Passo 5 — Modelo lógico
 
-Marco M1. A entrega deste passo é o modelo lógico: o desenho em `entregas/03-logico.pdf` (ou `.png`) e as tabelas de mapeamento abaixo.
+Marco M1. A entrega deste passo é o modelo lógico: o desenho em `doc_date/03-logico.pdf` (ou `.png`) e as tabelas de mapeamento abaixo.
 
 O modelo lógico traduz o modelo conceitual para tabelas relacionais, especificando chaves primárias (PK), chaves estrangeiras (FK), tipos de dados e cardinalidades (1:N).
 
