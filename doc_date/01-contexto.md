@@ -40,7 +40,7 @@ O **Verdade ou Bug** é um jogo de trivia em formato web (com HTML/CSS/Vanilla J
 
 O sistema de Trivia inicia na tela de boas-vindas com o registro do nome e a escolha do ícone (avatar) do usuário, cujas informações são cadastradas e armazenadas no banco de dados. Após o acesso, a interface interativa do quiz é exibida para que o usuário responda a perguntas relacionadas à tecnologia. As perguntas estão em português e possuem categoria, nível de dificuldade, explicação pedagógica e fonte de referência, operando com alternativas de verdadeiro ou falso.
 
-Cada sessão de jogo é composta por 10 questões sorteadas aleatoriamente pelo servidor a partir de um acervo central. A cada resposta correta confirmada, o usuário acumula 100 pontos, totalizando até 1.000 pontos caso acerte todas as questões da sessão. O sistema registra de forma persistente o resultado da partida vinculada ao ID do usuário. Ao término do quiz, a pontuação alcançada e a performance individual são exibidas na tela de resultado, acompanhadas de um ranking dinâmico que apresenta a posição do jogador em comparação com o restante dos participantes.
+Cada sessão de jogo é composta por 10 questões sorteadas aleatoriamente pelo servidor a partir de um acervo central. A cada resposta correta confirmada, o usuário acumula pontos dinamicamente de acordo com o nível de dificuldade da questão (conforme estipulado na tabela de níveis: 50 para Fácil, 75 para Médio e 100 para Difícil). O sistema registra de forma persistente o resultado da partida vinculada ao ID do usuário. Ao término do quiz, a pontuação alcançada e a performance individual são exibidas na tela de resultado, acompanhadas de um ranking dinâmico que apresenta a posição do jogador e o recorde de pontuação máxima no topo da tabela.
 
 ## 3. Requisitos e regras de negócio
 
@@ -59,8 +59,9 @@ Cada sessão de jogo é composta por 10 questões sorteadas aleatoriamente pelo 
 | **RA01** | Cada pergunta deverá pertencer a uma categoria específica da área de tecnologia. | Regra de Negócio |
 | **RA02** | Cada pergunta deverá possuir uma fonte bibliográfica ou link de referência oficial. | Regra de Negócio |
 | **RA03** | Cada pergunta deverá possuir um conjunto de alternativas correspondentes (Verdadeiro ou Falso), com apenas uma correta. | Regra de Negócio |
-| **RA04** | Cada resposta correta confirmada deverá valer exatamente 100 pontos. | Regra de Negócio |
+| **RA04** | Cada resposta correta confirmada pontuará o usuário com base no valor atribuído ao nível de dificuldade da questão na tabela de níveis (Fácil: 50 pts, Médio: 75 pts, Difícil: 100 pts). | Regra de Negócio |
 | **RA05** | Cada sessão de partida deverá conter exatamente 10 questões. | Regra de Negócio |
-| **RA06** | A pontuação máxima por sessão de trivia será de 1.000 pontos (10 questões multiplicadas por 100 pontos). | Regra de Negócio |
-| **RNF01** | Os campos obrigatórios das entidades (como nomes, textos de perguntas e IDs de relacionamento) não poderão aceitar valores nulos (`NOT NULL`). | Não Funcional |
-| **RNF02** | O Sistema de Gerenciamento de Banco de Dados relacional utilizado para a persistência dos dados deverá ser o Supabase (PostgreSQL), integrado a uma API backend em Node.js. | Não Funcional |
+| **RA06** | A pontuação máxima exibida no sistema corresponderá ao recorde global alcançado pelo jogador posicionado em primeiro lugar no ranking geral de pontuações. | Regra de Negócio |
+| **RNF01** | Os campos estruturais e chaves estrangeiras das entidades deverão obrigatoriamente impor restrições de não-nulidade (`NOT NULL`), assegurando a integridade referencial do banco de dados. | Não Funcional |
+| **RNF02** | Campos puramente descritivos e secundários que não comprometam a lógica de negócio ou as relações principais poderão ser configurados como opcionais (`NULL`), quando aplicável. | Não Funcional |
+| **RNF03** | O Sistema de Gerenciamento de Banco de Dados relacional utilizado para a persistência dos dados deverá ser o Supabase (PostgreSQL), integrado a uma API backend em Node.js. | Não Funcional |
