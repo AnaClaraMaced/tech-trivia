@@ -50,7 +50,7 @@ Este projeto integra de forma prática e transversal quatro disciplinas:
 ## 🔗 Repositórios do Projeto
 
 * 🖥️ **Front-End e Documentação:** [AnaClaraMaced/tech-trivia](https://github.com/AnaClaraMaced/tech-trivia.git)
-* ⚙️ **Back-End e Servidor:** *(Em andamento)*
+* ⚙️ **Back-End e Servidor:** [lchaves06/quiz-backend](https://github.com/lchaves06/quiz-backend.git)
 
 ---
 
