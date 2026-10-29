@@ -39,7 +39,7 @@ Este projeto integra de forma prática e transversal quatro disciplinas:
 - [x] **Feedback Educacional e Fonte:** Explicação detalhada após a confirmação da resposta, com link direto para a fonte original.
 - [x] **Painel de Resultados e Estatísticas:** Apresentação da pontuação final (100 pts por acerto), tempo total e maior sequência de acertos.
 - [x] **Análise Interativa de Respostas:** Modal interativo para rever cada pergunta e sua respectiva explicação.
-- [ ] **Ranking Global e Persistência:** Integração com banco de dados via Supabase para salvar e listar as maiores pontuações *(Em andamento)*.
+- [x] **Ranking Global e Persistência:** Integração com banco de dados via Supabase para salvar e listar as maiores pontuações.
 - [x] **Tema Claro / Escuro:** Alternância de tema com contraste calibrado para acessibilidade.
 - [ ] **Acessibilidade & Responsividade:** Navegação por teclado, suporte a leitores de tela e layout adaptável a telas móveis.
 
@@ -56,9 +56,9 @@ Este projeto integra de forma prática e transversal quatro disciplinas:
 
 ## 👥 Equipe do Projeto
 
-* **Ana Clara Macedo** — [@AnaClaraMaced](https://github.com/AnaClaraMaced)
+* **Ana Clara Macedo**
 * **Carina Tutihashi**
-* **Lucas Rodrigues** — [@lchaves06](https://github.com/lchaves06)
+* **Lucas Rodrigues**
 * **Marcelo Ludin**
 * **Murilo Santos**
 * **Pablo Gonçalves**
