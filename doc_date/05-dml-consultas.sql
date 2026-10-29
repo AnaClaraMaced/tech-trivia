@@ -330,7 +330,13 @@ COMMIT;
 -- (2, 'Robô', 'https://img.icons8.com/?size=100&id=Jz5tDx0gvMMC&format=png&color=000000')
 -- ON CONFLICT (icon_id) DO NOTHING;
 
-
-
-
-
+-- INSERT into icons (icon_id, icon_name, icon_url) VALUES
+-- (3, 'ryan', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=2we3n6cr'),
+-- (4, 'carlo', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=8elj9smm'),
+-- (5, 'juan', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=stbl35dz'),
+-- (6, 'fin', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=3chxm3da'),
+-- (7, 'summer', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=0yx8prvt'),
+-- (8, 'rick', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=dbmbz7f6'),
+-- (9, 'bob', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=7h1o9lbw'),
+-- (10, 'keirrison', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=08utww8d'),
+-- (11, 'android', 'https://api.dicebear.com/10.x/voxel-bot/svg?seed=x2moihby');
