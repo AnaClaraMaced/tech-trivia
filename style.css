@@ -139,21 +139,26 @@ form {
 /* ===== fileira dos icones do avatar ======
   (o grupo inteiro ) */
 .avatar-opcoes {
-    display: flex;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+    gap: 10px;
 }
 
 /* editor de ====== cada icone de avatar individualmente ====
    (o quadradinho ao redor do emogi) */
 .avatar-item {
     font-size: 20px;
-    padding: 6px 10px;
-    background: #e9e2d5;
+    padding: 0;       
+    background: transparent;
     border: 2px solid transparent;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
     user-select: none;
+    display: flex;             
+    align-items: center;        
+    justify-content: center;
+    overflow: hidden;    
 }
 /* movimento do icone do avatar quando esta selecionado 
    ou quando o mouse passa por cima */
@@ -282,6 +287,13 @@ footer p {
     justify-content: center;   /* centraliza o emoji horizontalmente */
     font-size: 44px;
     margin: 0 auto 16px auto;  /* centraliza o círculo na tela, com espaço embaixo */
+    overflow: hidden; 
+}
+
+.avatar-item img {
+    display: block;
+    flex-shrink: 0;
+    object-fit: cover;
 }
 
 /* texto "ola, usuario"  */
@@ -923,7 +935,7 @@ body.tema-claro {
     background:
         linear-gradient(rgba(59, 21, 104, 0.05) 1px, transparent 1px),
         linear-gradient(90deg, rgba(71, 19, 134, 0.05) 1px, transparent 1px),
-        linear-gradient(140deg, #886bf0, #ca86f1, #f0bb66);
+        linear-gradient(140deg, #524091, #5b3894, #cf9e4f);
     background-size: 40px 40px, 40px 40px, cover;
 }
 
@@ -1032,10 +1044,10 @@ body.tema-claro #ready-screen,
 body.tema-claro #quiz-screen,
 body.tema-claro #resultado-screen,
 body.tema-claro #ranking-screen {
-    background: linear-gradient(50deg, rgb(245, 222, 255), rgba(255, 243, 210, 0.9));
+    background: linear-gradient(50deg, rgb(232, 193, 255), rgb(241, 225, 184));
     border: 0,5px solid rgba(63, 19, 92, 0.4);
     box-shadow:
-        0 20px 40px rgba(146, 29, 224, 0.932),
+        0 20px 40px rgba(88, 17, 146, 0.932),
         0 0 0 6px rgba(255, 255, 255, 0.452);
     
 }
@@ -1043,7 +1055,7 @@ body.tema-claro #ranking-screen {
 /* botão de tema */
 body.tema-claro .btn-tema {
     background: #fbf7ee;
-    border: 1px solid rgba(59, 21, 104, 0.3);
+    border: 1px solid rgba(27, 21, 104, 0.3);
 }
 
 /* textos que usavam âmbar claro: versão mais escura pra ter contraste */
@@ -1111,4 +1123,306 @@ body.tema-claro .alternativa.certa {
 body.tema-claro .alternativa.errada {
     background: rgba(201, 74, 64, 0.22);
     border-color: #c94a40;
+}
+
+/* ============================================================
+   PAINEL DE CONFIGURAÇÕES
+   ============================================================ */
+
+.config-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 150;
+}
+
+.config-painel {
+    position: fixed;
+    top: 74px;
+    right: 20px;
+    width: 300px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 18px;
+    border-radius: 16px;
+    background: #1c1230;
+    color: #f6f5fc;
+    border: 1px solid rgba(245, 240, 230, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+}
+
+.config-painel[hidden],
+.config-overlay[hidden] {
+    display: none;
+}
+
+.config-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.config-topo h3 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+}
+
+.config-fechar {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(245, 240, 230, 0.3);
+    color: inherit;
+}
+
+.config-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.config-titulo {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.75;
+}
+
+.config-linha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.config-opcao {
+    flex: 1;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: rgba(245, 240, 230, 0.08);
+    border: 1px solid rgba(245, 240, 230, 0.2);
+    color: inherit;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.config-opcao.ativo {
+    background: linear-gradient(90deg, #a8741a, #54248b);
+    border-color: transparent;
+    color: #fff;
+}
+
+.config-valor {
+    min-width: 54px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+}
+
+.config-aviso {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* linhas com interruptor (liga/desliga) */
+.config-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: inherit;           /* sobrescreve o "label" global */
+    cursor: pointer;
+}
+
+.config-painel input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 44px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: rgba(128, 128, 128, 0.55);
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+
+.config-painel input[type="checkbox"]::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+}
+
+.config-painel input[type="checkbox"]:checked {
+    background: #a8741a;
+}
+
+.config-painel input[type="checkbox"]:checked::after {
+    transform: translateX(20px);
+}
+
+.config-reset {
+    flex: none;
+    width: 100%;
+    background: transparent;
+}
+
+/* ---------- painel no tema claro ---------- */
+body.tema-claro .config-painel {
+    background: #fbf7ee;
+    color: #3b1368;
+    border-color: rgba(59, 21, 104, 0.3);
+    box-shadow: 0 20px 40px rgba(59, 21, 104, 0.3);
+}
+body.tema-claro .config-opcao {
+    background: rgba(59, 21, 104, 0.06);
+    border-color: rgba(59, 21, 104, 0.25);
+}
+body.tema-claro .config-opcao.ativo {
+    background: linear-gradient(90deg, #a8741a, #54248b);
+    color: #fff;
+}
+body.tema-claro .config-fechar {
+    border-color: rgba(59, 21, 104, 0.35);
+}
+
+/* ============================================================
+   TAMANHO DO TEXTO (escala controlada pelo JS)
+   ============================================================ */
+.app > section {
+    zoom: var(--escala-texto, 1);
+}
+
+/* ============================================================
+   FONTE MAIS LEGÍVEL
+   ============================================================ */
+body.fonte-legivel,
+body.fonte-legivel * {
+    font-family: Verdana, Arial, sans-serif !important;
+    letter-spacing: 0.03em;
+}
+/* ============================================================
+   ALTO CONTRASTE (precisa ficar por último no arquivo)
+   ============================================================ */
+body.alto-contraste {
+    --cor-ambar: #ffd400;
+    --cor-texto: #ffffff;
+    --cor-texto-secundario: #000000;
+    --cor-resposta-usuario: #000000;
+    background: #4e4d4d;
+}
+
+body.alto-contraste #start-screen,
+body.alto-contraste #ready-screen,
+body.alto-contraste #quiz-screen,
+body.alto-contraste #resultado-screen,
+body.alto-contraste #ranking-screen {
+    background: #2b2a2a;
+    border: 2px solid #fff;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* formulário e campo de nome */
+body.alto-contraste form { background: #fff; border: 2px solid #fff; }
+body.alto-contraste input {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+}
+body.alto-contraste input::placeholder { color: #444; }
+body.alto-contraste .avatar-item { border-color: #000; }
+body.alto-contraste .avatar-item.selecionado,
+body.alto-contraste .avatar-item:hover {
+    border-color: #000;
+    outline: 3px solid #ffae00;
+}
+
+/* botões */
+body.alto-contraste button:not(.config-opcao):not(.config-fechar),
+body.alto-contraste .btn-primario {
+    background: #ffc400;
+    color: #000;
+    border: 2px solid #fff;
+}
+body.alto-contraste .btn-secundario {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+/* alternativas */
+body.alto-contraste .alternativa {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+body.alto-contraste .alternativa.certa { background: #003d1f; border-color: #00ff7f; }
+body.alto-contraste .alternativa.errada { background: #4a0000; border-color: #ff5a5a; }
+
+/* caixas com fundo translúcido */
+body.alto-contraste .lista-info li,
+body.alto-contraste .terminal-box,
+body.alto-contraste .pergunta-box,
+body.alto-contraste .explicacao,
+body.alto-contraste .cronometro,
+body.alto-contraste .ranking-banner,
+body.alto-contraste .rank-linha {
+    background: #000;
+    border-color: #fff;
+}
+body.alto-contraste .rank-linha.voce { border-color: #ffd400; }
+
+/* textos que eram branco translúcido ou colorido */
+body.alto-contraste .terminal-box p,
+body.alto-contraste .destaque,
+body.alto-contraste .podio-pontos,
+body.alto-contraste .rank-pontos,
+body.alto-contraste .rank-posicao,
+body.alto-contraste .qlist-titulo,
+body.alto-contraste .ranking-falta,
+body.alto-contraste .anel-pontos small,
+body.alto-contraste footer p,
+body.alto-contraste #start-screen main h2 {
+    color: #fff;
+}
+
+/* barra de progresso e anel */
+body.alto-contraste .progresso-container { background: #333; }
+body.alto-contraste .progresso { background: #ffd400; }
+body.alto-contraste .anel-trilha { stroke: #333; }
+
+/* painel de configurações */
+body.alto-contraste .config-painel {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+body.alto-contraste .config-opcao {
+    background: #000;
+    border: 2px solid #fff;
+    color: #fff;
+}
+body.alto-contraste .config-opcao.ativo {
+    background: #ffd400;
+    color: #000;
 }

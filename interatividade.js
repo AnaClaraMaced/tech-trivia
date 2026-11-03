@@ -78,9 +78,9 @@ document.addEventListener("DOMContentLoaded", function () {
           /* -------------------------------------------------------------
              📐 AJUSTE DE TAMANHO: Ícones na Grade da Tela Inicial
              ------------------------------------------------------------- */
-          img.style.width = "46px";
-          img.style.height = "46px";
-          img.style.objectFit = "contain";
+          img.style.width = "64px";
+          img.style.height = "64px";
+          img.style.objectFit = "cover";
           item.appendChild(img);
         } else {
           item.textContent = icone.icon_name || "👾";
@@ -167,11 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
       /* -------------------------------------------------------------
          📐 AJUSTE DE TAMANHO: Avatar Grande na Tela de Preparo (ready-screen)
          ------------------------------------------------------------- */
-      if (imgNoGrande) {
-        imgNoGrande.style.width = "64px";
-        imgNoGrande.style.height = "64px";
-        imgNoGrande.style.objectFit = "contain";
-      }
+    if (imgNoGrande) {
+      imgNoGrande.style.width = "100%";
+      imgNoGrande.style.height = "100%";
+      imgNoGrande.style.objectFit = "cover";
+    }
     }
 
     if (saudacao) saudacao.textContent = "Olá, " + nomeDigitado + "! 👋";
@@ -752,11 +752,116 @@ document.addEventListener("DOMContentLoaded", function () {
 /* -------------------------------------------------------------
    ALTERNADOR DE TEMA (MODO CLARO / MODO ESCURO)
    ------------------------------------------------------------- */
-const botaoTema = document.getElementById('botao-tema');
-if (botaoTema) {
-  botaoTema.addEventListener('click', function () {
-    document.body.classList.toggle('tema-claro');
-    const claro = document.body.classList.contains('tema-claro');
-    botaoTema.setAttribute('aria-label', claro ? 'Alternar para modo escuro' : 'Alternar para modo claro');
+/* -------------------------------------------------------------
+   PAINEL DE CONFIGURAÇÕES (tema, texto, contraste, fonte, animações)
+   ------------------------------------------------------------- */
+(function () {
+  const CHAVE = "verdadeOuBug:config";
+  const padrao = {
+    tema: "escuro",
+    escala: 1,
+    altoContraste: false,
+    fonteLegivel: false
+  };
+
+  // carrega o que foi salvo (se existir)
+  let config = Object.assign({}, padrao);
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CHAVE));
+    if (salvo) Object.assign(config, salvo);
+  } catch (e) {}
+
+  const botao = document.getElementById("botao-tema");
+  const painel = document.getElementById("painel-config");
+  const overlay = document.getElementById("config-overlay");
+  const botaoFechar = document.getElementById("config-fechar");
+  const botoesTema = document.querySelectorAll("[data-tema]");
+  const valorTexto = document.getElementById("texto-valor");
+  const aviso = document.getElementById("aviso-contraste");
+  const chkContraste = document.getElementById("cfg-contraste");
+  const chkFonte = document.getElementById("cfg-fonte");
+
+  if (!botao || !painel) return;
+
+  const ESCALA_MIN = 0.8;
+  const ESCALA_MAX = 1.4;
+  const PASSO = 0.1;
+
+  function aplicar() {
+    const body = document.body;
+
+    // o alto contraste sobrepõe o tema claro
+    body.classList.toggle("tema-claro", config.tema === "claro" && !config.altoContraste);
+    body.classList.toggle("alto-contraste", config.altoContraste);
+    body.classList.toggle("fonte-legivel", config.fonteLegivel);
+
+    document.documentElement.style.setProperty("--escala-texto", config.escala);
+
+    // atualiza os controles do painel
+    botoesTema.forEach(function (b) {
+      const ativo = b.dataset.tema === config.tema;
+      b.classList.toggle("ativo", ativo);
+      b.setAttribute("aria-pressed", ativo);
+    });
+    valorTexto.textContent = Math.round(config.escala * 100) + "%";
+    chkContraste.checked = config.altoContraste;
+    chkFonte.checked = config.fonteLegivel;
+    aviso.hidden = !config.altoContraste;
+
+    try { localStorage.setItem(CHAVE, JSON.stringify(config)); } catch (e) {}
+  }
+
+  function abrir() {
+    painel.hidden = false;
+    overlay.hidden = false;
+    botao.setAttribute("aria-expanded", "true");
+    botaoFechar.focus();
+  }
+
+  function fechar() {
+    painel.hidden = true;
+    overlay.hidden = true;
+    botao.setAttribute("aria-expanded", "false");
+    botao.focus();
+  }
+
+  botao.addEventListener("click", function () {
+    painel.hidden ? abrir() : fechar();
   });
-}
+  botaoFechar.addEventListener("click", fechar);
+  overlay.addEventListener("click", fechar);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !painel.hidden) fechar();
+  });
+
+  botoesTema.forEach(function (b) {
+    b.addEventListener("click", function () {
+      config.tema = b.dataset.tema;
+      aplicar();
+    });
+  });
+
+  document.getElementById("texto-menos").addEventListener("click", function () {
+    config.escala = Math.max(ESCALA_MIN, Math.round((config.escala - PASSO) * 10) / 10);
+    aplicar();
+  });
+  document.getElementById("texto-mais").addEventListener("click", function () {
+    config.escala = Math.min(ESCALA_MAX, Math.round((config.escala + PASSO) * 10) / 10);
+    aplicar();
+  });
+
+  chkContraste.addEventListener("change", function () {
+    config.altoContraste = chkContraste.checked;
+    aplicar();
+  });
+  chkFonte.addEventListener("change", function () {
+    config.fonteLegivel = chkFonte.checked;
+    aplicar();
+  });
+  document.getElementById("config-reset").addEventListener("click", function () {
+    config = Object.assign({}, padrao);
+    aplicar();
+  });
+
+  aplicar(); // aplica as configurações salvas ao abrir o site
+})();

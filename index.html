@@ -9,7 +9,48 @@
 </head>
 <body>
     <div class="app">
-        <button type="button" class="btn-tema" id="botao-tema" aria-label="Alternar para modo claro">⚙️</button>
+        <button type="button" class="btn-tema" id="botao-tema"
+        aria-label="Abrir configurações" aria-expanded="false" aria-controls="painel-config">⚙️</button>
+
+<div class="config-overlay" id="config-overlay" hidden></div>
+
+<div class="config-painel" id="painel-config" role="dialog" aria-label="Configurações" hidden>
+    <div class="config-topo">
+        <h3>⚙️ Configurações</h3>
+        <button type="button" class="config-fechar" id="config-fechar" aria-label="Fechar configurações">✕</button>
+    </div>
+
+    <div class="config-grupo">
+        <span class="config-titulo">Tema</span>
+        <div class="config-linha">
+            <button type="button" class="config-opcao" data-tema="escuro">🌙 Escuro</button>
+            <button type="button" class="config-opcao" data-tema="claro">☀️ Claro</button>
+        </div>
+        <small class="config-aviso" id="aviso-contraste" hidden>O alto contraste está ativo e sobrepõe o tema.</small>
+    </div>
+
+    <div class="config-grupo">
+        <span class="config-titulo">Tamanho do texto</span>
+        <div class="config-linha">
+            <button type="button" class="config-opcao" id="texto-menos" aria-label="Diminuir texto">A−</button>
+            <span class="config-valor" id="texto-valor">100%</span>
+            <button type="button" class="config-opcao" id="texto-mais" aria-label="Aumentar texto">A+</button>
+        </div>
+    </div>
+
+    <div class="config-grupo">
+        <label class="config-switch">
+            <span>Alto contraste</span>
+            <input type="checkbox" id="cfg-contraste">
+        </label>
+        <label class="config-switch">
+            <span>Fonte mais legível</span>
+            <input type="checkbox" id="cfg-fonte">
+        </label>
+    </div>
+
+    <button type="button" class="config-opcao config-reset" id="config-reset">Restaurar padrão</button>
+</div>
         <section id="start-screen">
             
         <header>
@@ -33,13 +74,11 @@
         <div class="start-row">
             <form>
                 <div class="avatar-box">
-                            <span class="avatar-title">Escolha seu Avatar:</span>
-                            <div class="avatar-opcoes">
-                                <span class="avatar-title">Escolha seu Avatar:</span>
-                            <div class="avatar-opcoes">
-                                <!-- Deixe vazio! O JavaScript vai preencher os ícones do Supabase aqui automaticamente -->
-                            </div>
-                        </div>
+                    <span class="avatar-title">Escolha seu Avatar:</span>
+                    <div class="avatar-opcoes">
+                     <!-- Deixe vazio! O JavaScript vai preencher os ícones do Supabase aqui automaticamente -->
+                    </div>
+        </div>
                 <label for="nome-jogador">Como podemos te chamar?</label>
                 <input type="text" id="nome-jogador" required>
                <button type="submit">Continuar →</button>
