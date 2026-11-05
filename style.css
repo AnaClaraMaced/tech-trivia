@@ -916,12 +916,6 @@ button:active {
     z-index: 100;
 }
 
-
-/* ============================================================
-   MODO CLARO — só entra em ação quando o JS adicionar a classe
-   "tema-claro" no <body>.
-   ============================================================ */
-
 /* 1. Redefine as variáveis principais — isso sozinho já muda
    a cor de boa parte dos textos do site (h1, h2, saudação,
    números do anel, nomes do ranking, etc), porque eles usam
@@ -1126,6 +1120,74 @@ body.tema-claro .alternativa.errada {
 }
 
 /* ============================================================
+   MODO CLARO: versão 3
+   ============================================================ */
+
+/* fundo + variáveis de texto: roxo forte no canto superior esquerdo,
+   âmbar vivo no inferior direito, mesma grade de 40px do modo escuro */
+body.tema-claro {
+    --cor-texto: #2e1250;
+    --cor-texto-secundario: #4a1d78;
+    background:
+        linear-gradient(rgba(59, 26, 94, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 26, 94, 0.07) 1px, transparent 1px),
+        radial-gradient(ellipse at 0% 0%, rgba(123, 63, 196, 0.85) 0%, rgba(123, 63, 196, 0) 60%),
+        radial-gradient(ellipse at 100% 100%, rgba(240, 166, 58, 0.95) 0%, rgba(240, 166, 58, 0) 58%),
+        linear-gradient(135deg, #c9a4ef, #e6c6ea 50%, #f6d79a);
+    background-size: 40px 40px, 40px 40px, cover, cover, cover;
+}
+
+/* cards das telas: lilás translúcido, borda roxa visível */
+body.tema-claro #start-screen,
+body.tema-claro #ready-screen,
+body.tema-claro #quiz-screen,
+body.tema-claro #resultado-screen,
+body.tema-claro #ranking-screen {
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.58), rgba(238, 220, 255, 0.5));
+    border: 1.5px solid rgba(59, 26, 94, 0.38);
+    box-shadow: 0 30px 80px rgba(59, 26, 94, 0.38);
+}
+
+/* subtítulo "// Curiosidades Sobre Tecnologia" */
+body.tema-claro .tagline {
+    color: #76480a;
+}
+
+/* pergunta da tela inicial */
+body.tema-claro #start-screen main h2 {
+    color: #3b1a5e;
+}
+
+/* badges: fundo roxo suave, mantendo a barrinha âmbar à esquerda */
+body.tema-claro .lista-info li {
+    background-color: rgba(59, 26, 94, 0.1);
+    border-color: rgba(59, 26, 94, 0.32);
+    border-left-color: var(--cor-ambar);
+}
+
+/* card creme do formulário */
+body.tema-claro form {
+    border: 1px solid rgba(59, 26, 94, 0.28);
+    box-shadow: none;
+}
+
+/* botões principais: âmbar mais escuro para o texto branco ler bem */
+body.tema-claro:not(.alto-contraste) button:not(.btn-tema):not(.btn-secundario):not(.config-opcao):not(.config-fechar):not(.config-reset) {
+    background: linear-gradient(90deg, #8f5f0f, #4f2587);
+}
+
+/* botão de tema (engrenagem) */
+body.tema-claro .btn-tema {
+    background: linear-gradient(135deg, #8f5f0f, #4f2587);
+    border: none;
+}
+
+/* rodapé */
+body.tema-claro footer p {
+    color: #2e1250;
+}
+
+/* ============================================================
    PAINEL DE CONFIGURAÇÕES
    ============================================================ */
 
@@ -1320,14 +1382,15 @@ body.fonte-legivel * {
     letter-spacing: 0.03em;
 }
 /* ============================================================
-   ALTO CONTRASTE (precisa ficar por último no arquivo)
+   ALTO CONTRASTE 
    ============================================================ */
 body.alto-contraste {
-    --cor-ambar: #ffd400;
+    --hc-destaque: #ffb000;   /* troque só aqui para mudar a cor de destaque */
+    --cor-ambar: var(--hc-destaque);
     --cor-texto: #ffffff;
     --cor-texto-secundario: #000000;
     --cor-resposta-usuario: #000000;
-    background: #4e4d4d;
+    background: #120a1f;
 }
 
 body.alto-contraste #start-screen,
@@ -1335,7 +1398,7 @@ body.alto-contraste #ready-screen,
 body.alto-contraste #quiz-screen,
 body.alto-contraste #resultado-screen,
 body.alto-contraste #ranking-screen {
-    background: #2b2a2a;
+    background: #1c1230;
     border: 2px solid #fff;
     box-shadow: none;
     backdrop-filter: none;
@@ -1350,23 +1413,34 @@ body.alto-contraste input {
     border: 2px solid #000;
 }
 body.alto-contraste input::placeholder { color: #444; }
+body.alto-contraste input:focus {
+    outline: 3px solid #3b1566;
+    outline-offset: 2px;
+}
 body.alto-contraste .avatar-item { border-color: #000; }
 body.alto-contraste .avatar-item.selecionado,
 body.alto-contraste .avatar-item:hover {
     border-color: #000;
-    outline: 3px solid #ffae00;
+    background: #e9dcff;
+    outline: 4px solid #3b1566;
+    outline-offset: 1px;
 }
 
 /* botões */
-body.alto-contraste button:not(.config-opcao):not(.config-fechar),
+body.alto-contraste button:not(.config-opcao):not(.config-fechar):not(.btn-tema):not(.alternativa):not(.btn-desistir):not(.btn-secundario),
 body.alto-contraste .btn-primario {
-    background: #ffc400;
-    color: #000;
+    background: var(--hc-destaque);
+    color: #fff;
     border: 2px solid #fff;
 }
 body.alto-contraste .btn-secundario {
     background: #000;
     color: #fff;
+    border: 2px solid #fff;
+}
+/* botão de tema (engrenagem): preto com borda branca para o ícone aparecer */
+body.alto-contraste .btn-tema {
+    background: #000;
     border: 2px solid #fff;
 }
 
@@ -1390,7 +1464,7 @@ body.alto-contraste .rank-linha {
     background: #000;
     border-color: #fff;
 }
-body.alto-contraste .rank-linha.voce { border-color: #ffd400; }
+body.alto-contraste .rank-linha.voce { border-color: var(--hc-destaque); }
 
 /* textos que eram branco translúcido ou colorido */
 body.alto-contraste .terminal-box p,
@@ -1408,7 +1482,7 @@ body.alto-contraste #start-screen main h2 {
 
 /* barra de progresso e anel */
 body.alto-contraste .progresso-container { background: #333; }
-body.alto-contraste .progresso { background: #ffd400; }
+body.alto-contraste .progresso { background: var(--hc-destaque); }
 body.alto-contraste .anel-trilha { stroke: #333; }
 
 /* painel de configurações */
@@ -1423,6 +1497,6 @@ body.alto-contraste .config-opcao {
     color: #fff;
 }
 body.alto-contraste .config-opcao.ativo {
-    background: #ffd400;
+    background: var(--hc-destaque);
     color: #000;
 }
